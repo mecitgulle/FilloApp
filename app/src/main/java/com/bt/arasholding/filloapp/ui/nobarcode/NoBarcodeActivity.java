@@ -81,6 +81,7 @@ public class NoBarcodeActivity extends BaseActivity implements NoBarcodeMvpView 
         setContentView(R.layout.activity_no_barcode);
 
         dosyalariSil();
+        //commit deneme
 
         getActivityComponent().inject(this);
 
