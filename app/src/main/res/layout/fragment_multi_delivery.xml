@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ui.delivery.multidelivery.MultiDeliveryFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_delivery_list"
+        android:layout_above="@id/btnGroup"
+        android:layout_marginBottom="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+<LinearLayout
+    android:id="@+id/btnGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:layout_alignParentBottom="true">
+    <com.manojbhadane.QButton
+        android:id="@+id/btnTeslimatKapat"
+        android:layout_alignParentBottom="true"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:background="@color/btnBlue1"
+        android:text="Teslimat Kapat"
+        android:textColor="@android:color/white"
+        app:qb_backgroundColor="@color/btnBlue2"
+        app:qb_radius="10"
+        app:qb_strokeColor="@color/btnBlue2"
+        app:qb_strokeWidth="0" />
+    <com.manojbhadane.QButton
+        android:id="@+id/btnBarkodOkut"
+        android:layout_alignParentBottom="true"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:background="@color/btnBlue1"
+        android:text="Barkod Okut"
+        android:textColor="@android:color/white"
+        app:qb_backgroundColor="@color/btnBlue1"
+        app:qb_radius="10"
+        app:qb_strokeColor="@color/btnBlue2"
+        app:qb_strokeWidth="0" />
+</LinearLayout>
+
+
+
+</RelativeLayout>

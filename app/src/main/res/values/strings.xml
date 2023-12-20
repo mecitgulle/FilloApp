@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Fillo Lojistik</string>
+    <string name="action_settings">Settings</string>
+
+    <!--App Message-->
+    <string name="api_retry_error">Lütfen tekrar deneyiniz!</string>
+    <string name="api_default_error">Birşeyler yanlış gitti!</string>
+    <string name="some_error">Hata Oluştu !</string>
+    <string name="connection_error">İnternet bağlantısı yok!</string>
+    <string name="tracking_cargo">Sorgula</string>
+    <string name="tracking_cargo_description">Sayın Müşterimiz,lütfen atf numaranızı veya irsaliye numaranızı yazınız</string>
+    <string name="gonderiNo">Gönderi Takip No</string>
+    <string name="cargo_detail">Gönderi Detayı</string>
+    <string name="seferNumarasi">Sefer Numarası</string>
+    <string name="btnAracCikis">Araç Çıkış</string>
+
+    <!--Login Validation-->
+    <string name="empty_password">Şifre girmediniz.</string>
+    <string name="empty_username">Kullanıcı adı girmediniz.</string>
+    <string name="login_text">Oturum Aç</string>
+    <string name="username">Kullanıcı Adı</string>
+    <string name="password">Şifre</string>
+    <string name="login">Oturum Aç</string>
+    <string name="title_camera_rationale">Why camera?</string>
+    <string name="message_camera_rationale">We use your camera to scan barcodes</string>
+    <string name="action_ok">Ok</string>
+    <string name="deliveredTitle">Teslim Bilgileri</string>
+    <string name="btnDeliver">Kaydet</string>
+    <string name="empty_data">Değer boş olamaz</string>
+    <string name="ara">Ara</string>
+    <string name="title_activity_home">Fillo Lojistik-Mobil Kurye</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Fillo Lojistik - Mobil Kurye</string>
+    <string name="nav_header_subtitle"></string>
+    <string name="nav_header_desc">Başlık</string>
+
+    <string name="menu_home">Ana Menü</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Ayarlar</string>
+    <string name="menu_share">Paylaş</string>
+    <string name="menu_send">Gönder</string>
+    <string name="menu_indirme">İndirme</string>
+    <string name="menu_yukleme">Yükleme</string>
+    <string name="menu_atf_teslimat">Atf Teslimat</string>
+    <string name="menu_toplu_teslimat">Toplu Teslimat</string>
+    <string name="menu_arac_cikis">Araç Çıkış</string>
+    <string name="menu_session">Oturum Kapat</string>
+    <string name="version">Version</string>
+    <string name="title_activity_settings">Ayarlar</string>
+    <string name="bt_not_enabled">Bluetooth was not enabled.</string>
+    <string name="title_activity_textbarcode">Barkod Okut</string>
+    <string name="scan_bar_code">Barkod Okutunuz</string>
+    <string name="menu_dagitim">Dağıtım</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about">Hakkında</string>
+
+</resources>

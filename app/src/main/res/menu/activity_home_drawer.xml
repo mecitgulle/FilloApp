@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_yukleme"
+            android:icon="@drawable/ic_move"
+            android:title="@string/menu_yukleme" />
+        <item
+            android:id="@+id/nav_indirme"
+            android:icon="@drawable/ic_move_up"
+            android:title="@string/menu_indirme" />
+        <item
+            android:id="@+id/nav_dagitim"
+            android:icon="@drawable/ic_shipping_and_delivery"
+            android:title="@string/menu_dagitim" />
+        <item
+            android:id="@+id/nav_atf_teslimat"
+            android:icon="@drawable/ic_completed_task_white"
+            android:title="@string/menu_atf_teslimat" />
+        <item
+            android:id="@+id/nav_toplu_teslimat"
+            android:icon="@drawable/ic_list_black_white"
+            android:title="@string/menu_toplu_teslimat" />
+        <item
+            android:id="@+id/nav_arac_cikis"
+            android:icon="@drawable/ic_lorry_black_white"
+            android:title="@string/menu_arac_cikis" />
+        <item
+            android:id="@+id/nav_cargo_movement"
+            android:icon="@drawable/ic_priority"
+            android:title="Yükleme/İndirme Haraketleri" />
+        <item
+            android:id="@+id/nav_hat_yukleme"
+            android:icon="@drawable/ic_conveyor"
+            android:title="Hat Yükleme" />
+        <item
+            android:id="@+id/nav_barkod_yazdir"
+            android:icon="@drawable/ic_printer"
+            android:title="Barkod Yazdır" />
+        <item
+            android:id="@+id/nav_devir"
+            android:icon="@drawable/ic_clipboard"
+            android:title="Devir" />
+        <item
+            android:id="@+id/nav_toplu_devir"
+            android:icon="@drawable/ic_check_list"
+            android:title="Toplu Devir" />
+        <item
+            android:id="@+id/nav_tools"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/menu_tools" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="Hakkında" />
+    </group>
+
+    <item android:title="Oturum">
+        <menu>
+            <item
+                android:id="@+id/nav_session"
+                android:icon="@drawable/ic_person_outline_black_24dp"
+                android:title="@string/menu_session" />
+            <!--<item-->
+            <!--android:id="@+id/nav_send"-->
+            <!--android:icon="@drawable/ic_menu_send"-->
+            <!--android:title="@string/menu_send" />-->
+        </menu>
+    </item>
+</menu>

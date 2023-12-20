@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/light_blue2"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/spinner_all_customer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:ms_background_color="@color/light_gray"
+        app:ms_hint_color="@color/gray"
+        app:ms_text_color="@color/gray" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Geliş Tarihi"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/edtGelisTarihi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Geliş Tarihi"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/btnDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_calendar"
+            android:text="Button" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ürün Kodu"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtUrunKodu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ürün Kodu"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="İçerik"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtIcerik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="İçerik"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Koli Adeti"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtKoliAdet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Koli Adeti"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Plaka"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtPlaka"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Plaka"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Açıklama"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtNoBarcodeAciklama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Açıklama"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/txtBarkodsuzKargo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Barkodsuz Kargo Fotoğrafı"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtBarkodsuzKargoFoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Barkodsuz Kargo Fotoğrafı"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/btnBarkodsuzFoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:text="Button"
+            android:src="@drawable/ic_baseline_photo_camera_24" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+    </ScrollView>

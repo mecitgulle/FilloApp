@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="9"
+            android:layout_width="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtUnvan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Ünvan" />
+            <TextView
+                android:id="@+id/txtSubeAdi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Şube Adı" />
+            <TextView
+                android:id="@+id/txtUrunKodu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Ürün Kodu" />
+            <TextView
+                android:id="@+id/txtIcerik"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="İçerik" />
+            <TextView
+                android:id="@+id/txtKoliAdet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Koli Adeti" />
+            <TextView
+                android:id="@+id/txtPlaka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Plaka" />
+            <TextView
+                android:id="@+id/txtTarih"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Geliş Tarihi" />
+            <TextView
+                android:id="@+id/txtAciklama"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Açıklama" />
+            <TextView
+                android:id="@+id/txtOlusturan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:textAllCaps="true"
+                android:text="Oluşturan" />
+        </LinearLayout>
+        <!--        <LinearLayout-->
+        <!--            android:orientation="vertical"-->
+        <!--            android:layout_weight="4"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/txtPlaka"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                android:gravity="center_vertical|start"-->
+        <!--                android:textAllCaps="true"-->
+        <!--                android:textStyle="bold"-->
+        <!--                android:text="34ABC340" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/txtParca"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                android:gravity="center_vertical|start"-->
+        <!--                android:textAllCaps="true"-->
+        <!--                android:text="1.Parça" />-->
+
+        <!--        </LinearLayout>-->
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

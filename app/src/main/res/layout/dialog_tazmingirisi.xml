@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/light_blue2"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtHasarFoto1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hasar Fotoğrafı"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtHasarFoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hasar Fotoğrafı"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/btnHasarFoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:text="Button"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtTutunakFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tutanak Fotoğrafı"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtTutanakFotoo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tutanak Fotoğrafı"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/btnTutanakFoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:text="Button"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lytDevirSebebi"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tazmin Sebebi"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="14sp" />
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinner_compensation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="10dp"
+            app:ms_background_color="@color/light_gray"
+            app:ms_hint="Tazmin sebebi seçiniz"
+            app:ms_hint_color="@color/gray"
+            app:ms_text_color="@color/gray" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtsecilenHasarTarihi1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hasar Tarihi"
+        android:visibility="gone"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:id="@+id/trhgroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/edtHasarTarihi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hasar Tarihi"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/btnDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:text="Button"
+            app:srcCompat="@drawable/ic_calendar" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txthasaryeri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="Hasar Yeri"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtHasarYeri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hasar Yeri"
+        android:visibility="gone"
+        android:inputType="textMultiLine"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtaciklama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="Açıklama"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtAciklama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Açıklama"
+        android:visibility="gone"
+        android:inputType="textMultiLine"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txttazminplaka"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="Plaka"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edtPlaka"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Plaka"
+        android:text=""
+        android:visibility="gone"
+        android:maxLength="10"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtAracTipi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="Araç Tipi"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/layout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rd1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="HAT"
+                android:textColor="@color/black" />
+
+            <RadioButton
+                android:id="@+id/rd2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="DAĞITIM"
+                android:textColor="@color/black" />
+
+        </RadioGroup>
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>

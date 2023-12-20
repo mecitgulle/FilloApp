@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.delivery.multidelivery.MultiDeliveryFragment">
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/recycler_atf_list"-->
+    <!--        android:layout_above="@id/btnGroup"-->
+    <!--        android:layout_marginBottom="4dp"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"/>-->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Gönderi Bilgisi"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/txtAtfID"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="5dp"-->
+<!--                android:text="ATFID"-->
+<!--                android:textSize="16sp" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtAtfNO"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:text="ATFNO"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtTarihC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:text="TARİH"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txtIrsaliyeNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="İRSALİYE"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtGonderen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="GONDEREN"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtAlici"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="ALICI"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtCikisSube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="ÇIKIŞ"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtVarisSube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="VARIŞ"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtToplamParca"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="PARCA"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtDesi"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="DESİ"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtOdemeSekli"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="ÖDEME ŞEKLİ"
+                android:textSize="16sp" />
+        <LinearLayout
+            android:id="@+id/Group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:id="@+id/txtTazminText"
+                android:textStyle="bold"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#9a67ea"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="TAZMİN NO :"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/txtTazminNo"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/btnGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <com.manojbhadane.QButton
+            android:id="@+id/btnTazminGir"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="2"
+            android:background="@color/btnBlue1"
+            android:text="Tazmin Girişi"
+            android:textColor="@android:color/white"
+            app:qb_backgroundColor="@color/btnBlue2"
+            app:qb_radius="10"
+            app:qb_strokeColor="@color/btnBlue2"
+            app:qb_strokeWidth="0" />
+        <!--        <com.manojbhadane.QButton-->
+        <!--            android:id="@+id/btnBarkodOkut"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="5dp"-->
+        <!--            android:background="@color/btnBlue1"-->
+        <!--            android:text="Barkod Okut"-->
+        <!--            android:textColor="@android:color/white"-->
+        <!--            app:qb_backgroundColor="@color/btnBlue1"-->
+        <!--            app:qb_radius="10"-->
+        <!--            app:qb_strokeColor="@color/btnBlue2"-->
+        <!--            app:qb_strokeWidth="0" />-->
+    </LinearLayout>
+
+
+</RelativeLayout>
