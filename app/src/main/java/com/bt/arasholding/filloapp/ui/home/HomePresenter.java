@@ -409,7 +409,7 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
                         .subscribe(
                                 cargoMovementResponse -> {
                                     AppLogger.d(cargoMovementResponse.getMessage().toString());
-                                    getDataManager().deleteBarcode(barcode);
+                                    deleteBarcode(barcode);
 //                                    if (cargoMovementResponse.getStatusCode().equals(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN))) {
 //
 //                                    } else {
