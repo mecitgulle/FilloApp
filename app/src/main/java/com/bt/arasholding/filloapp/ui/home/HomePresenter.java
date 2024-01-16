@@ -382,7 +382,7 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
                         .subscribe(
                                 cargoMovementResponse -> {
                                     AppLogger.d(cargoMovementResponse.getMessage().toString());
-                                    getDataManager().deleteBarcode(barcode);
+                                    deleteBarcode(barcode);
 //                                    if (cargoMovementResponse.getStatusCode().equals(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN))) {
 //
 //                                    } else {
@@ -481,6 +481,21 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
                                 })
         );
     }
+    private void deleteBarcode(String barcode) {
+        getCompositeDisposable().add(getDataManager()
+                .deleteBarcode(barcode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+
+                    }
+                }, throwable -> {
+
+                }));
+    }
+
     @Override
     public void setLatitude(String latitude) {
         getDataManager().setLatitude(latitude);

@@ -42,11 +42,13 @@ public class CargoBarcodePresenter<V extends CargoBarcodeMvpView> extends BasePr
         request.setType(1);
         request.setSefer(getDataManager().getCurrentShipmentCode());
 //
-        Barcode mBarcode = new Barcode();
-        mBarcode.setBarcode(barcode);
-        mBarcode.setIslemTipi(1);
+        if (!getMvpView().isNetworkConnected()) {
+            Barcode mBarcode = new Barcode();
+            mBarcode.setBarcode(barcode);
+            mBarcode.setIslemTipi(1);
 
-        saveBarcode(mBarcode);
+            saveBarcode(mBarcode);
+        }
 
         getCompositeDisposable().add(
                 getDataManager().doCargoMovementApiCall(request)
@@ -112,11 +114,13 @@ public class CargoBarcodePresenter<V extends CargoBarcodeMvpView> extends BasePr
         request.setType(2);
         request.setSefer(getDataManager().getCurrentShipmentCode());
 
-        Barcode mBarcode = new Barcode();
-        mBarcode.setBarcode(barcode);
-        mBarcode.setIslemTipi(2);
+        if (!getMvpView().isNetworkConnected()) {
+            Barcode mBarcode = new Barcode();
+            mBarcode.setBarcode(barcode);
+            mBarcode.setIslemTipi(2);
 
-        saveBarcode(mBarcode);
+            saveBarcode(mBarcode);
+        }
 
         getCompositeDisposable().add(
                 getDataManager().doCargoMovementApiCall(request)
