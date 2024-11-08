@@ -212,4 +212,7 @@ public abstract class BaseDialog extends DialogFragment implements DialogMvpView
             mActivity.vibrate();
         }
     }
+    public void vibrate2()
+    {
+    }
 }

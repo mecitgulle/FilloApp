@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class AtfModel implements Serializable {
 
@@ -22,6 +23,41 @@ public class AtfModel implements Serializable {
     @SerializedName("ALICI")
     @Expose
     private String aliciAdi;
+
+    @SerializedName("TESLIMEDILENADET")
+    @Expose
+    private String teslimEdilenAdet;
+    @SerializedName("TESLIMTIPI")
+    @Expose
+    private String teslimTipi;
+
+    @SerializedName("OKUTULAN_BARKOD_LIST")
+    @Expose
+    private List<String> okutulan_barkod_list;
+
+    public List<String> getOkutulan_barkod_list() {
+        return okutulan_barkod_list;
+    }
+
+    public void setOkutulan_barkod_list(List<String> okutulan_barkod_list) {
+        this.okutulan_barkod_list = okutulan_barkod_list;
+    }
+
+    public String getTeslimEdilenAdet() {
+        return teslimEdilenAdet;
+    }
+
+    public void setTeslimEdilenAdet(String teslimEdilenAdet) {
+        this.teslimEdilenAdet = teslimEdilenAdet;
+    }
+
+    public String getTeslimTipi() {
+        return teslimTipi;
+    }
+
+    public void setTeslimTipi(String teslimTipi) {
+        this.teslimTipi = teslimTipi;
+    }
 
     public String getAtfId() {
         return atfId;

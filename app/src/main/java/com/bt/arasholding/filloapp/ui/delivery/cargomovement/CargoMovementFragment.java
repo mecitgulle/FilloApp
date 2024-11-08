@@ -16,7 +16,9 @@ import com.bt.arasholding.filloapp.R;
 import com.bt.arasholding.filloapp.data.network.model.CargoMovementDetail;
 import com.bt.arasholding.filloapp.data.network.model.CargoMovementDetailSummarys;
 import com.bt.arasholding.filloapp.di.component.ActivityComponent;
+import com.bt.arasholding.filloapp.ui.base.BaseActivity;
 import com.bt.arasholding.filloapp.ui.base.BaseFragment;
+import com.bt.arasholding.filloapp.ui.delivermultiplecustomerwaybill.DeliverMultipleCustomerActivity;
 
 import java.util.List;
 
@@ -169,5 +171,9 @@ public class CargoMovementFragment extends BaseFragment implements CargoMovement
     public void updateSubeIndirme2(int indirme) {
 
         txtIndirme2.setText(String.valueOf(indirme));
+    }
+    @Override
+    public void showTokenExpired(){
+        BaseActivity.showTokenExpired(getActivity(),"Oturum süresi doldu. Tekrar giriş yapınız","UYARI");
     }
 }

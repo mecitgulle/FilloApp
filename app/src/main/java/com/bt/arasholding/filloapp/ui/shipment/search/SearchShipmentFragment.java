@@ -1,10 +1,13 @@
 package com.bt.arasholding.filloapp.ui.shipment.search;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.bt.arasholding.filloapp.R;
 import com.bt.arasholding.filloapp.di.component.ActivityComponent;
@@ -13,6 +16,7 @@ import com.bt.arasholding.filloapp.ui.base.BaseFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 
 public class SearchShipmentFragment extends BaseFragment {
 
@@ -21,7 +25,7 @@ public class SearchShipmentFragment extends BaseFragment {
     @BindView(R.id.edt_sefer_no)
     EditText edtSeferNo;
 
-    public interface CallbackSearchShipment {
+        public interface CallbackSearchShipment {
         void searchShipment(String shipmentNumber);
     }
 
@@ -43,11 +47,41 @@ public class SearchShipmentFragment extends BaseFragment {
             component.inject(this);
             setUnBinder(ButterKnife.bind(this, view));
         }
+        edtSeferNo.requestFocus();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         setUp(view);
 
         return view;
     }
+
+    @OnEditorAction(R.id.edt_sefer_no)
+    public boolean onEditorAction(TextView view, int keyCode, KeyEvent keyEvent) {
+
+        String textSeferBarcode = view.getText().toString();
+
+        if (textSeferBarcode.isEmpty())
+            return false;
+
+        showMessage(textSeferBarcode);
+
+        if (keyEvent != null) {
+            // Barcode finger scanner
+
+            if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                edtSeferNo.setText("");
+                ((CallbackSearchShipment) getActivity()).searchShipment(textSeferBarcode);
+            }
+        } else {
+            // Keyboard
+            edtSeferNo.setText("");
+            hideKeyboard();
+            ((CallbackSearchShipment) getActivity()).searchShipment(textSeferBarcode);
+        }
+
+        return false;
+    }
+
 
     @Override
     protected void setUp(View view) {

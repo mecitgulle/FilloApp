@@ -105,6 +105,14 @@ public abstract class BaseFragment extends Fragment implements MvpView {
             mActivity.vibrate();
         }
     }
+
+    @Override
+    public void vibrate2(String Message)
+    {
+        if (mActivity != null) {
+            mActivity.vibrate2(Message);
+        }
+    }
     @Override
     public void onError(String message) {
         if (mActivity != null) {

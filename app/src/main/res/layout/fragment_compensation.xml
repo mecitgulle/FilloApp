@@ -30,8 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="Gönderi Bilgisi"
+                android:fontFamily="@font/basic"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
 <!--            <TextView-->
@@ -53,8 +54,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/basic"
                     android:text="ATFNO"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/txtTarihC"
@@ -62,8 +64,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/basic"
                     android:text="TARİH"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
 
@@ -73,7 +76,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="İRSALİYE"
-                android:textSize="16sp" />
+                android:fontFamily="@font/basic"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtGonderen"
@@ -81,7 +85,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="GONDEREN"
-                android:textSize="16sp" />
+                android:fontFamily="@font/basic"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtAlici"
@@ -89,7 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="ALICI"
-                android:textSize="16sp" />
+                android:fontFamily="@font/basic"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtCikisSube"
@@ -97,15 +103,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="ÇIKIŞ"
-                android:textSize="16sp" />
+                android:fontFamily="@font/basic"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtVarisSube"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                android:fontFamily="@font/basic"
                 android:text="VARIŞ"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,7 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="PARCA"
-                    android:textSize="16sp" />
+                    android:fontFamily="@font/basic"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/txtDesi"
@@ -138,7 +147,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="ÖDEME ŞEKLİ"
-                android:textSize="16sp" />
+                android:fontFamily="@font/basic"
+                android:textSize="14sp" />
         <LinearLayout
             android:id="@+id/Group"
             android:layout_width="match_parent"
@@ -153,16 +163,17 @@
                 android:layout_weight="1"
                 android:textColor="#9a67ea"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/basic"
                 android:layout_marginBottom="5dp"
                 android:text="TAZMİN NO :"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
             <TextView
                 android:id="@+id/txtTazminNo"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
         </LinearLayout>
 

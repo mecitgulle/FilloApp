@@ -1,15 +1,27 @@
 package com.bt.arasholding.filloapp.ui.delivery.compensation;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +31,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Base64;
+import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +55,9 @@ import com.bt.arasholding.filloapp.data.network.model.DeliverCargoImageUploadReq
 import com.bt.arasholding.filloapp.data.network.model.DeliveredCargoRequest;
 import com.bt.arasholding.filloapp.data.network.model.TazminTalepImageList;
 import com.bt.arasholding.filloapp.di.component.ActivityComponent;
+import com.bt.arasholding.filloapp.ui.base.BaseActivity;
 import com.bt.arasholding.filloapp.ui.base.BaseFragment;
+import com.bt.arasholding.filloapp.ui.camera2.CameraActivity;
 import com.bt.arasholding.filloapp.ui.delivery.DeliveryActivity;
 import com.bt.arasholding.filloapp.ui.delivery.multidelivery.MultiDeliveryFragment;
 import com.bt.arasholding.filloapp.ui.delivery.multidelivery.MultiDeliveryMvpPresenter;
@@ -71,11 +87,12 @@ import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class CompensationFragment extends BaseFragment implements CompensationMvpView {
 
     public static final String TAG = "CompensationFragment";
-
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
 
     @Inject
     CompensationMvpPresenter<CompensationMvpView> mPresenter;
@@ -143,6 +160,7 @@ public class CompensationFragment extends BaseFragment implements CompensationMv
 
     MaterialSpinner spinner_compensation;
     String tazminSebepId;
+    private String currentImagePath;
 
     public CompensationFragment() {
         // Required empty public constructor
@@ -220,13 +238,12 @@ public class CompensationFragment extends BaseFragment implements CompensationMv
 
     @OnClick(R.id.btnTazminGir)
     public void onbtnTazminGirClicked() {
-        if (atf_id != null){
+        if (atf_id != null) {
             if (!atf_id.isEmpty())
                 showTazminDialog();
             else
                 Toast.makeText(getContext(), "ATFID bulunamadı !", Toast.LENGTH_SHORT).show();
-        }
-        else
+        } else
             Toast.makeText(getContext(), "ATFID bulunamadı !", Toast.LENGTH_SHORT).show();
     }
 
@@ -413,14 +430,16 @@ public class CompensationFragment extends BaseFragment implements CompensationMv
             @Override
             public void onClick(View v) {
                 resimTipi = "RESIM";
-                dispatchTakePictureIntent(atf_id);
+//                dispatchTakePictureIntent(atf_id);
+                cameraPermission(atf_id);
             }
         });
         btnTutanakFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resimTipi = "TUTANAK";
-                dispatchTakePictureIntent(atf_id);
+                cameraPermission(atf_id);
+//                dispatchTakePictureIntent(atf_id);
             }
         });
 //
@@ -527,31 +546,94 @@ public class CompensationFragment extends BaseFragment implements CompensationMv
         alertDialog.show();
     }
 
-//    @OnCheckedChanged(R.id.rd1)
+    //    @OnCheckedChanged(R.id.rd1)
 //    public void onAracTipiSelected(CompoundButton button, boolean checked) {
 //        this.secilenAracTipi = checked ? "HAT" : "DAGITIM";
 //    }
+//    public void cameraPermission(String a) {
+//        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+//        } else {
+//            dispatchTakePictureIntent(a);
+//        }
+//    }
+    public void cameraPermission(String imagePath) {
+        // Context ve Activity'nin null olup olmadığını kontrol et
+        if (getContext() == null || getActivity() == null) {
+            return;
+        }
+        currentImagePath = imagePath;
+        // Kamera iznini kontrol et
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Eğer izin verilmemişse, kullanıcıdan izin iste
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+        } else {
+            // Eğer izin verilmişse, doğrudan fotoğraf çekim işlemini başlat
+            dispatchTakePictureIntent(currentImagePath);
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Kullanıcı izni verdiyse, dispatchTakePictureIntent'i çağır
+                dispatchTakePictureIntent(currentImagePath);  // Fotoğraf çekme işlemini başlat
+            } else {
+                // Kullanıcı izni reddettiyse, bir uyarı göster
+                Toast.makeText(getContext(), "Kamera izni gerekli", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //    @Override
+//    public void dispatchTakePictureIntent(String id) {
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        intent.putExtra("id", id);
+//        if (resimTipi.equals("RESIM")) {
+//            atf_id = id;
+//        } else {
+//            atf_id = id + "_2";
+//        }
+//
+//        File photoFile = null;
+//        try {
+//            photoFile = createImageFile(atf_id);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//        Uri photoUri = FileProvider.getUriForFile(getBaseActivity(), getActivity().getPackageName() + ".provider", photoFile);
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//        startActivityForResult(intent, 100);
+//    }
     @Override
     public void dispatchTakePictureIntent(String id) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra("id", id);
-        if (resimTipi.equals("RESIM")) {
-            atf_id = id;
-        } else {
-            atf_id = id + "_2";
-        }
 
-        File photoFile = null;
-        try {
-            photoFile = createImageFile(atf_id);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile(id); // Dosya oluşturma
+                filePath = photoFile.getAbsolutePath(); // Dosya yolunu güncelle
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+
+            if (photoFile != null) {
+                Uri photoUri = FileProvider.getUriForFile(getBaseActivity(), getActivity().getPackageName() + ".provider", photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(intent, 100);
+            }
+        } else {
+            // Kamera uygulaması yoksa
+            Intent manualCameraIntent = new Intent(getActivity(), CameraActivity.class);
+            manualCameraIntent.putExtra("id", id);
+            startActivityForResult(manualCameraIntent, 100);
         }
-        Uri photoUri = FileProvider.getUriForFile(getBaseActivity(), getActivity().getPackageName() + ".provider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-        startActivityForResult(intent, 100);
     }
 
     private File createImageFile(String uzanti) throws IOException {
@@ -579,48 +661,92 @@ public class CompensationFragment extends BaseFragment implements CompensationMv
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data); // Unutma! Bu satırı eklemelisin
         if (requestCode == 100 && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            String id = extras.getString("id");
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            try {
-                File file = new File(filePath);
-                Bitmap imageBitmap = null;
-                Uri uri = Uri.fromFile(file);
-                try {
-                    imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-//                        bitmap = getResizedBitmap(bitmap, 25, 25);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                if (resimTipi.equals("RESIM")) {
-                    resimEncoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    TazminTalepImageList imageList = new TazminTalepImageList();
-                    imageList.setBase64String(resimEncoded);
-                    imageList.setResimTipi("RESIM");
-                    imageList.setDosyaAdi(atf_id + ".jpg");
-                    tazminTalepImageLists.add(imageList);
-                    txtHasarFoto.setText(atf_id + ".jpg");
-                } else {
-                    tutanakEncoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    TazminTalepImageList imageList = new TazminTalepImageList();
-                    imageList.setBase64String(tutanakEncoded);
-                    imageList.setResimTipi("TUTANAK");
-                    imageList.setDosyaAdi(atf_id + ".jpg");
-                    tazminTalepImageLists.add(imageList);
-                    txtTutanakFotoo.setText(atf_id + ".jpg");
-                }
-            } catch (Exception e) {
-                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
-            }
+            // Eğer resim kendi CameraActivity'nden geldiyse
+            if (data != null && data.hasExtra("image_path")) {
+                filePath = data.getStringExtra("image_path"); // image_path'i al ve filePath'ı güncelle
 
+                // Burada filePath kullanarak resmi yükleyin
+                try {
+                    File file = new File(filePath); // filePath burada tanımlı
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.fromFile(file));
+
+                    // Resmi JPEG formatında sıkıştır ve byte dizisine çevir
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                    // Base64'e çevir ve gereksiz karakterleri temizle
+                    String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n", "").trim();
+
+                    // Resim tipine göre uygun alanları doldur
+                    TazminTalepImageList imageList = new TazminTalepImageList();
+                    imageList.setBase64String(encodedImage);
+                    imageList.setDosyaAdi(atf_id + ".jpg");
+
+                    if (resimTipi.equals("RESIM")) {
+                        imageList.setResimTipi("RESIM");
+                        tazminTalepImageLists.add(imageList);
+                        txtHasarFoto.setText(atf_id + ".jpg");
+                    } else {
+                        imageList.setResimTipi("TUTANAK");
+                        tazminTalepImageLists.add(imageList);
+                        txtTutanakFotoo.setText(atf_id + ".jpg");
+                    }
+                } catch (IOException e) {
+                    Toast.makeText(getActivity(), "Resim yüklenirken hata oluştu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Hata: " + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Eğer varsayılan kamera ile çekim yapılmışsa
+                // Burada filePath kullanarak resmi yükleyin (bu durumda filePath daha önce güncellenmiş olmalı)
+                try {
+                    File file = new File(filePath);
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.fromFile(file));
+
+                    // Resmi JPEG formatında sıkıştır ve byte dizisine çevir
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                    // Base64'e çevir ve gereksiz karakterleri temizle
+                    String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n", "").trim();
+
+                    // Resim tipine göre uygun alanları doldur
+                    TazminTalepImageList imageList = new TazminTalepImageList();
+                    imageList.setBase64String(encodedImage);
+                    imageList.setDosyaAdi(atf_id + ".jpg");
+
+                    if (resimTipi.equals("RESIM")) {
+                        imageList.setResimTipi("RESIM");
+                        tazminTalepImageLists.add(imageList);
+                        txtHasarFoto.setText(atf_id + ".jpg");
+                    } else {
+                        imageList.setResimTipi("TUTANAK");
+                        tazminTalepImageLists.add(imageList);
+                        txtTutanakFotoo.setText(atf_id + ".jpg");
+                    }
+                } catch (IOException e) {
+                    Toast.makeText(getActivity(), "Resim yüklenirken hata oluştu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Hata: " + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
         } else if (resultCode == RESULT_CANCELED) {
-            Toast.makeText(getActivity(), "Fotağraf çekmeden çıktınız.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Fotoğraf çekmeden çıktınız.", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getActivity(), "HATA:Fotağraf çekilemedi.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "HATA: Fotoğraf çekilemedi.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+    @Override
+    public void showTokenExpired() {
+        BaseActivity.showTokenExpired(getActivity(), "Oturum süresi doldu. Tekrar giriş yapınız", "UYARI");
+    }
+
+
 }

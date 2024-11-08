@@ -2,23 +2,37 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.bt.arasholding.filloapp"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 78
-        versionName "1.78"
+        targetSdkVersion 34
+        versionCode 82
+        versionName "1.86.5"
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+    tasks.withType(JavaCompile).configureEach {
+        options.fork = true
+        options.forkOptions.jvmArgs += [
+                '--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED',
+                '--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED',
+        ]}
     buildTypes {
         debug {
 //            shrinkResources true
 //            useProguard true
 //            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://filloweb.fillo.com.tr/fillomobilapi/Gonderi\"")
+            buildConfigField("String", "BASE_URL", "\"https://filloweb.fillo.com.tr/fillomobilapiv2/Gonderi\"")
             buildConfigField("String", "API_KEY", "\"test123\"")
         }
         release {
@@ -27,7 +41,7 @@ android {
 //            minifyEnabled true
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://filloweb.fillo.com.tr/fillomobilapi/Gonderi\"")
+            buildConfigField("String", "BASE_URL", "\"https://filloweb.fillo.com.tr/fillomobilapiv2/Gonderi\"")
             buildConfigField("String", "API_KEY", "\"test123\"")
         }
     }
@@ -36,11 +50,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = '29.0.2'
+    namespace 'com.bt.arasholding.filloapp'
 }
 
 dependencies {
-
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     def nav_version = "1.0.0-alpha07"
@@ -52,8 +65,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation "androidx.fragment:fragment:1.3.1"
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
@@ -67,13 +80,15 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.5"
     implementation 'com.infideap.drawerbehavior:drawer-behavior:0.2.2'
     // database
-    implementation 'androidx.room:room-rxjava2:2.2.6'
-    annotationProcessor 'androidx.room:room-compiler:2.2.6'
+//    implementation 'androidx.room:room-rxjava2:2.2.6'
+//    annotationProcessor 'androidx.room:room-compiler:2.2.6'
+//    implementation "androidx.room:room-rxjava2:2.5.1"
+
+    implementation "androidx.room:room-runtime:2.4.0"
+    annotationProcessor "androidx.room:room-compiler:2.4.0"
+
 
     // dependency injection
-//    implementation "com.google.dagger:dagger-android-support:2.20"
-//    implementation "com.google.dagger:dagger:2.20"
-//    annotationProcessor "com.google.dagger:dagger-compiler:2.20"
     implementation 'com.google.dagger:dagger:2.20'
     implementation 'com.google.dagger:dagger-android-support:2.20'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
@@ -120,17 +135,24 @@ dependencies {
 
     // job scheduler
     implementation 'com.github.keithyokoma:Boogaloo:1.0.0@aar'
-    implementation 'com.github.simplymadeapps:QuickPeriodicJobScheduler:-SNAPSHOT'
+//    implementation 'com.github.simplymadeapps:QuickPeriodicJobScheduler:1.0.0'
 
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
 
-    implementation "com.google.android.gms:play-services-maps:17.0.0"
+    implementation "com.google.android.gms:play-services-maps:19.0.0"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-messaging:24.0.0'
 
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.3.1'
     implementation 'joda-time:joda-time:2.9.9'
+
+//kamera oluşturmak için
+    def camerax_version = "1.3.0"
+    implementation "androidx.camera:camera-core:$camerax_version"
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    implementation "androidx.camera:camera-view:$camerax_version"
 
 }

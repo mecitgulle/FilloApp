@@ -28,6 +28,7 @@ public interface MvpView {
     void showMessage(@StringRes int resId);
 
     void vibrate();
+    void vibrate2(String Message);
 //    MediaPlayer playBeepSound();
 
     boolean isNetworkConnected();

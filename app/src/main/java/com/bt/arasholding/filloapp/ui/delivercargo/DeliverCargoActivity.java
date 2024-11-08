@@ -25,7 +25,6 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import com.bt.arasholding.filloapp.R;
 import com.bt.arasholding.filloapp.data.network.model.AtfUndeliverableReasonModel;
 import com.bt.arasholding.filloapp.data.network.model.DeliverMultipleCargoModel;
@@ -405,6 +404,11 @@ public class DeliverCargoActivity extends BaseActivity implements DeliverCargoMv
     void onRdAlinmadiChanged(boolean checked) {
         this.evrakAlindiMi = !checked ? "ALINDI" : "ALINMADI";
     }
+    @Override
+    public void showTokenExpired(){
+        BaseActivity.showTokenExpired(DeliverCargoActivity.this,"Oturum süresi doldu. Tekrar giriş yapınız","UYARI");
+    }
+
 
     protected void getCurrentLocation() {
         konumYoneticisi = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

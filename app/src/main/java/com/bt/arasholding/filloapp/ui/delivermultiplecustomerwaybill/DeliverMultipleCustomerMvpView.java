@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DeliverMultipleCustomerMvpView extends MvpView {
     void setSpinner(List<CustomerResponseModel> model);
+    void showTokenExpired();
 }

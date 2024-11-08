@@ -89,4 +89,16 @@
         <item name="colorButtonNormal">@color/myPeach</item>
         <item name="colorControlHighlight">@color/myRed</item>
     </style>
+
+    <style name="FullWidthDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:windowMinWidthMajor">100%</item> <!-- Tablet için -->
+        <item name="android:windowMinWidthMinor">100%</item> <!-- Telefon için -->
+        <item name="android:windowBackground">@android:color/white</item> <!-- Arka planı beyaz yapıyoruz -->
+        <item name="android:textColorPrimary">@android:color/black</item> <!-- Metin rengi siyah -->
+        <item name="android:textSize">18sp</item> <!-- Varsayılan yazı boyutu -->
+    </style>
+
+
+
 </resources>

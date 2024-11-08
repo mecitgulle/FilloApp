@@ -7,6 +7,7 @@ import com.bt.arasholding.filloapp.data.network.model.CargoMovementDetail;
 import com.bt.arasholding.filloapp.data.network.model.CargoMovementDetailSummarys;
 import com.bt.arasholding.filloapp.data.network.model.NoBarcodeSaveAtfNoRequest;
 import com.bt.arasholding.filloapp.ui.base.BasePresenter;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -31,13 +32,21 @@ public class CargoMovementPresenter<V extends CargoMovementMvpView> extends Base
 
         CargoDetailRequest request = new CargoDetailRequest();
 
-        if (isBarcode){
+        if (trackId.length() == 34 || trackId.length() == 11) {
             request.setAtfId(trackId);
-        }else{
+        } else if (trackId.length() == 7) {
             request.setAtfNo(trackId);
+        }
+        if (trackId.length() == 17)
+        {
+            request.setAtfNo(trackId);
+            request.setKtfBarkodu(trackId);
         }
 
         request.setToken(getDataManager().getAccessToken());
+
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
 
         getCompositeDisposable().add(
                 getDataManager().doCargoMovementDetailApiCall(request)

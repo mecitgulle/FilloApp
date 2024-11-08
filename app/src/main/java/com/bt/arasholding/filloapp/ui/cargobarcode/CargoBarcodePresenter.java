@@ -562,42 +562,43 @@ public class CargoBarcodePresenter<V extends CargoBarcodeMvpView> extends BasePr
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        refreshList(barcode.getIslemTipi());
+//                        refreshList(barcode.getIslemTipi());
                     }
                 }, throwable -> {
 
                 }));
     }
 
-    private void updateBarcodebyBarcodeType(Barcode barcode) {
-        getCompositeDisposable().add(getDataManager()
-                .updateBarcodebyBarcodeType(barcode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        refreshList(barcode.getIslemTipi());
-                    }
-                }, throwable -> {
+//    private void updateBarcodebyBarcodeType(Barcode barcode) {
+//        getCompositeDisposable().add(getDataManager()
+//                .updateBarcodebyBarcodeType(barcode)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Boolean>() {
+//                    @Override
+//                    public void accept(Boolean aBoolean) throws Exception {
+//                        refreshList(barcode.getIslemTipi());
+//                    }
+//                }, throwable -> {
+//
+//                }));
+//    }
 
-                }));
-    }
+//    public void refreshList(int islemTipi) {
+//        getCompositeDisposable().add(getDataManager()
+//                .getBarcodesByIslemTipi(islemTipi)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<List<Barcode>>() {
+//                    @Override
+//                    public void accept(List<Barcode> barcodeList) throws Exception {
+////                        getMvpView().updateBarcodeList(barcodeList);
+//                    }
+//                }, throwable -> {
+//
+//                }));
+//    }
 
-    public void refreshList(int islemTipi) {
-        getCompositeDisposable().add(getDataManager()
-                .getBarcodesByIslemTipi(islemTipi)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Barcode>>() {
-                    @Override
-                    public void accept(List<Barcode> barcodeList) throws Exception {
-//                        getMvpView().updateBarcodeList(barcodeList);
-                    }
-                }, throwable -> {
-
-                }));
-    }
 //    public void refreshList(int islemTipi) {
 //        getCompositeDisposable().add(getDataManager()
 //                .getBarcodesByIslemTipi(islemTipi)

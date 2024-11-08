@@ -1,206 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/lytDevirSebebi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:padding="16dp">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/lytDevirSebebi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Devir Sebebi"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Devir Sebebi"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="14sp" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_undeliverable"
+                app:ms_background_color="@color/light_gray"
+                app:ms_hint="Devir sebebi seçiniz"
+                app:ms_hint_color="@color/gray"
+                app:ms_text_color="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lytTeslimTipi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teslim Tipi"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="14sp" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_TeslimTipi"
+                app:ms_background_color="@color/light_gray"
+                app:ms_hint="Teslim Tipi seçiniz"
+                app:ms_hint_color="@color/gray"
+                app:ms_text_color="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtsecilenTeslimTarihi1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Teslim Tarihi"
             android:textColor="@android:color/holo_green_dark"
             android:textSize="14sp" />
 
-        <com.jaredrummler.materialspinner.MaterialSpinner
-            android:id="@+id/spinner_undeliverable"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:ms_background_color="@color/light_gray"
-            app:ms_hint="Devir sebebi seçiniz"
-            app:ms_hint_color="@color/gray"
-            app:ms_text_color="@color/gray" />
-    </LinearLayout>
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/txtsecilenTeslimTarihi1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Teslim Tarihi"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/edtTeslimTarihi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Teslim Tarihi"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="24sp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/btnDatePicker"
+                app:srcCompat="@drawable/ic_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:text="Button" />
+
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/edtTeslimTarihi"
+            android:id="@+id/txtsecilenTeslimSaati1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Teslim Tarihi"
-            android:text=""
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:textSize="24sp" />
+            android:text="Teslim Saati"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="14sp" />
 
-        <ImageButton
-            android:id="@+id/btnDatePicker"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_calendar"
-            android:text="Button" />
+            android:orientation="horizontal">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/edtTeslimSaati"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Teslim Saati"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="24sp" />
 
+            <ImageButton
+                android:id="@+id/btnTimePicker"
+                app:srcCompat="@drawable/ic_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:text="Button" />
 
-    <TextView
-        android:id="@+id/txtsecilenTeslimSaati1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Teslim Saati"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="14sp" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/lytTeslimAlanAd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teslim Alan Adı"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edtTeslimAlanAdi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Teslim Alan Adı"
+                android:inputType="textPersonName"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lytTeslimAlanSoyad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teslim Alan Soyadı"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edtTeslimAlanSoyadi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Teslim Alan Soyadı"
+                android:inputType="textPersonName"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lytTeslimAlanKimlikNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kimlik No"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edtKimlikNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Kimlik No"
+                android:inputType="number"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="24sp" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/edtTeslimSaati"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Teslim Saati"
-            android:text=""
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:textSize="24sp" />
-
-        <ImageButton
-            android:id="@+id/btnTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_clock"
-            android:text="Button" />
-
-    </RelativeLayout>
-
-
-
-    <LinearLayout
-        android:id="@+id/lytTeslimAlanAd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Teslim Alan Adı"
+            android:text="Açıklama"
             android:textColor="@android:color/holo_green_dark"
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edtTeslimAlanAdi"
+            android:id="@+id/edtAciklama"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Teslim Alan Adı"
-            android:inputType="textPersonName"
+            android:hint="Açıklama"
+            android:inputType="textMultiLine"
             android:text=""
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="24sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lytTeslimAlanSoyad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
 
         <TextView
+            android:id="@+id/txtTeslimAdet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Teslim Alan Soyadı"
+            android:text="Teslim Edilen Adet"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <EditText
-            android:id="@+id/edtTeslimAlanSoyadi"
+            android:id="@+id/edtTeslimAdet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Teslim Alan Soyadı"
-            android:inputType="textPersonName"
+            android:hint="Teslim Edilen Adet"
             android:text=""
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
-            android:textSize="24sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lytTeslimAlanKimlikNo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+            android:textSize="24sp"
+            android:visibility="gone" />
 
         <TextView
+            android:id="@+id/txtMusteriTeslimat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kimlik No"
+            android:text="Teslim Fotoğrafı"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
-        <EditText
-            android:id="@+id/edtKimlikNo"
+        <RelativeLayout
+            android:id="@+id/rlt_musteriteslimat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Kimlik No"
-            android:inputType="number"
-            android:text=""
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:textSize="24sp" />
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txt_musteriteslimat_foto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Müşteri Teslimat Fotoğrafı"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/btnMusteriTeslimatFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:src="@drawable/ic_baseline_photo_camera_24"
+                android:text="Button" />
+
+        </RelativeLayout>
+
+
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Açıklama"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/edtAciklama"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Açıklama"
-        android:inputType="textMultiLine"
-        android:text=""
-        android:textColor="@android:color/black"
-        android:textColorHint="@android:color/darker_gray"
-        android:textSize="24sp" />
-
-
-</LinearLayout>
+</ScrollView>

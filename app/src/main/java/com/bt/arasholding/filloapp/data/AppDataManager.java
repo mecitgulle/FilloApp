@@ -6,7 +6,6 @@ import com.bt.arasholding.filloapp.data.db.DbHelper;
 import com.bt.arasholding.filloapp.data.model.Barcode;
 import com.bt.arasholding.filloapp.data.network.ApiHeader;
 import com.bt.arasholding.filloapp.data.network.ApiHelper;
-import com.bt.arasholding.filloapp.data.network.model.AtfUndeliverableReasonModel;
 import com.bt.arasholding.filloapp.data.network.model.AtfUndeliverableReasonResponseModel;
 import com.bt.arasholding.filloapp.data.network.model.CargoBarcodeTextRequest;
 import com.bt.arasholding.filloapp.data.network.model.CargoBarcodeTextResponse;
@@ -17,7 +16,6 @@ import com.bt.arasholding.filloapp.data.network.model.CargoMovementRequest;
 import com.bt.arasholding.filloapp.data.network.model.CargoMovementResponse;
 import com.bt.arasholding.filloapp.data.network.model.CompensationRequest;
 import com.bt.arasholding.filloapp.data.network.model.CustomerListResponseModel;
-import com.bt.arasholding.filloapp.data.network.model.CustomerResponseModel;
 import com.bt.arasholding.filloapp.data.network.model.DeliverCargoImageUploadRequest;
 import com.bt.arasholding.filloapp.data.network.model.DeliverCargoImageUploadResponse;
 import com.bt.arasholding.filloapp.data.network.model.DeliverMultipleCargoResponse;
@@ -131,6 +129,7 @@ public class AppDataManager implements DataManager {
     public Single<DeliverMultipleCargoResponse> doMultiDeliveryApiCall(DeliveredCargoRequest teslimatKapatRequest) {
         return mApiHelper.doMultiDeliveryApiCall(teslimatKapatRequest);
     }
+
     @Override
     public Single<DeliverMultipleCargoResponse> doCustomerDelivery(DeliveredCargoRequest teslimatKapatRequest) {
         return mApiHelper.doCustomerDelivery(teslimatKapatRequest);
@@ -166,14 +165,17 @@ public class AppDataManager implements DataManager {
     public Single<AtfUndeliverableReasonResponseModel> getCompensationReason(Deneme deneme) {
         return mApiHelper.getCompensationReason(deneme);
     }
+
     @Override
     public Single<CustomerListResponseModel> getCustomerList(Deneme deneme) {
         return mApiHelper.getCustomerList(deneme);
     }
+
     @Override
     public Single<CustomerListResponseModel> getAllCustomerList(Deneme deneme) {
         return mApiHelper.getAllCustomerList(deneme);
     }
+
     @Override
     public Single<NoBarcodeCargoResponse> getNoBarcodeList(Deneme deneme) {
         return mApiHelper.getNoBarcodeList(deneme);
@@ -195,7 +197,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void updateUserInfo(String accessToken, Long userId, LoggedInMode loggedInMode, String userName,String subeKodu,String shipmentCode,String  groupId) {
+    public void updateUserInfo(String accessToken, Long userId, LoggedInMode loggedInMode, String userName, String subeKodu, String shipmentCode, String groupId) {
         setAccessToken(accessToken);
         setCurrentUserId(userId);
         setCurrentUserLoggedInMode(loggedInMode);
@@ -292,7 +294,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Boolean getSelectedBluetooth()  {
+    public Boolean getSelectedBluetooth() {
         return mPreferencesHelper.getSelectedBluetooth();
     }
 
@@ -345,6 +347,7 @@ public class AppDataManager implements DataManager {
     public String getLongitude() {
         return mPreferencesHelper.getLongitude();
     }
+
     @Override
     public String getGroupId() {
         return mPreferencesHelper.getGroupId();
@@ -360,6 +363,15 @@ public class AppDataManager implements DataManager {
         return mDbHelper.saveBarcode(barcode);
     }
 
+//    @Override
+//    public Observable<List<Barcode>> getAllBarcodes() {
+//        return mDbHelper.getAllBarcodes();
+//    }
+
+    //    @Override
+//    public List<Barcode> getAllBarcodes() {
+//        return mDbHelper.getAllBarcodes();
+//    }
     @Override
     public Observable<List<Barcode>> getAllBarcodes() {
         return mDbHelper.getAllBarcodes();
@@ -370,41 +382,61 @@ public class AppDataManager implements DataManager {
         return mDbHelper.getBarcodesByIslemTipi(islemTipi);
     }
 
-    @Override
-    public Observable<Boolean> deleteBarcodesByType(int islemTipi) {
-        return mDbHelper.deleteBarcodesByType(islemTipi);
-    }
+//    @Override
+//    public List<Barcode> getBarcodesByIslemTipi(int islemTipi) {
+//        return mDbHelper.getBarcodesByIslemTipi(islemTipi);
+//    }
 
+    //    @Override
+//    public Observable<Boolean> deleteBarcodesByType(int islemTipi) {
+//        return mDbHelper.deleteBarcodesByType(islemTipi);
+//    }
+//    public Observable<Boolean> deleteBarcodesByType(int islemTipi) {
+//        return mDbHelper.deleteBarcodesByType(islemTipi);
+//    }
+
+    //    @Override
+//    public Observable<Boolean> updateBarcode(long id, String alindiMi) {
+//        return mDbHelper.updateBarcode(id, alindiMi);
+//    }
     @Override
     public Observable<Boolean> updateBarcode(long id, String alindiMi) {
-        return mDbHelper.updateBarcode(id,alindiMi);
+        return mDbHelper.updateBarcode(id, alindiMi);
     }
 
+    //    @Override
+//    public Observable<Boolean> deleteBarcode(String barcode) {
+//        return mDbHelper.deleteBarcode(barcode);
+//    }
     @Override
-    public Observable<Boolean> deleteBarcode(String barcode) {
+    public Single<Boolean> deleteBarcode(String barcode) {
         return mDbHelper.deleteBarcode(barcode);
     }
 
-
     @Override
-    public Observable<Boolean> updateBarcodebyBarcodeType(Barcode barcode) {
-        return mDbHelper.updateBarcodebyBarcodeType(barcode);
+    public Single<Boolean> deleteBarcodesByType(int islemTipi) {
+        return mDbHelper.deleteBarcodesByType(islemTipi);
     }
 
-    @Override
-    public Barcode getBarcodesByBarcode(String barcode) {
-        return mDbHelper.getBarcodesByBarcode(barcode);
-    }
+//    @Override
+//    public Observable<Boolean> updateBarcodebyBarcodeType(Barcode barcode) {
+//        return mDbHelper.updateBarcodebyBarcodeType(barcode);
+//    }
 
-    @Override
-    public Observable<Boolean> updateBarcodeHasarAciklama(long id, String aciklama) {
-        return mDbHelper.updateBarcodeHasarAciklama(id,aciklama);
-    }
+//    @Override
+//    public Barcode getBarcodesByBarcode(String barcode) {
+//        return mDbHelper.getBarcodesByBarcode(barcode);
+//    }
 
-    @Override
-    public Observable<Boolean> updateBarcodePhoto(long id, String foto) {
-        return mDbHelper.updateBarcodePhoto(id,foto);
-    }
+//    @Override
+//    public Observable<Boolean> updateBarcodeHasarAciklama(long id, String aciklama) {
+//        return mDbHelper.updateBarcodeHasarAciklama(id,aciklama);
+//    }
+
+//    @Override
+//    public Observable<Boolean> updateBarcodePhoto(long id, String foto) {
+//        return mDbHelper.updateBarcodePhoto(id,foto);
+//    }
 
 
 //    @Override

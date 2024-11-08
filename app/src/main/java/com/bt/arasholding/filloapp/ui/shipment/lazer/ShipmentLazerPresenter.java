@@ -46,11 +46,18 @@ public class ShipmentLazerPresenter<V extends ShipmentLazerMvpView> extends Base
             getMvpView().showMessage(R.string.connection_error);
             return;
         }
+        TrackingRequest request = new TrackingRequest(getDataManager().getAccessToken());
+
+        if(shipmentBarcode.length() == 28)
+        {
+            request.setSeferBarkodu(shipmentBarcode);
+        }
+        else{
+            request.setSeferId(shipmentBarcode);
+        }
 
         getMvpView().showLoading();
 
-        TrackingRequest request = new TrackingRequest(getDataManager().getAccessToken());
-        request.setSeferBarkodu(shipmentBarcode);
 
         getCompositeDisposable().add(getDataManager()
                 .doTrackingApiCall(request)
@@ -251,6 +258,7 @@ public class ShipmentLazerPresenter<V extends ShipmentLazerMvpView> extends Base
                                             getMvpView().showMessage(cargoMovementResponse.getMessage());
                                             getMvpView().vibrate();
                                             getMvpView().hideLoading();
+                                            getMvpView().clearBarcodeText();
                                         }
                                     }
                                 }, throwable -> {
@@ -576,5 +584,15 @@ public class ShipmentLazerPresenter<V extends ShipmentLazerMvpView> extends Base
 
                 }));
     }
+//public void refreshList(int islemTipi) {
+//    try {
+//        List<Barcode> barcodeList = getDataManager().getBarcodesByIslemTipi(islemTipi);
+//        // UI'yi güncellemek için gerekli işlemleri yap
+//        getMvpView().updateBarcodeList(barcodeList);
+//    } catch (Exception e) {
+//        // Hata durumunu ele al
+//    }
+//}
+
 
 }

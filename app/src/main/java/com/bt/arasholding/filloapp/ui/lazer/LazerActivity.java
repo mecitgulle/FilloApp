@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.bt.arasholding.filloapp.ui.cargobarcode.CargoBarcodeActivity;
 import com.bt.arasholding.filloapp.ui.cargobarcode.CargoBarcodeMvpPresenter;
 import com.bt.arasholding.filloapp.ui.cargobarcode.CargoBarcodeMvpView;
 import com.bt.arasholding.filloapp.ui.delivercargo.DeliverCargoActivity;
+import com.bt.arasholding.filloapp.ui.delivery.DeliveryActivity;
 import com.bt.arasholding.filloapp.ui.shipment.ShipmentActivity;
 import com.bt.arasholding.filloapp.ui.shipment.lazer.ShipmentLazerActivity;
 import com.bt.arasholding.filloapp.utils.AppConstants;
@@ -72,7 +74,14 @@ public class LazerActivity extends BaseActivity implements LazerMvpView {
         }
         updateToolbarTitle();
         edtBarcodeText.setText("");
+        edtBarcodeText.setFocusableInTouchMode(true);
+        edtBarcodeText.setFocusable(true);
         edtBarcodeText.requestFocus();
+
+// Klavyeyi manuel olarak kapatma
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(edtBarcodeText.getWindowToken(), 0);
+
     }
 
     @Override
@@ -111,6 +120,7 @@ public class LazerActivity extends BaseActivity implements LazerMvpView {
 
          if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 edtBarcodeText.setText("");
+                edtBarcodeText.requestFocus();
                 switch (islemTipi) {
                     case AppConstants.YUKLEME:
                         mPresenter.yukleme(textBarcode);
@@ -123,7 +133,8 @@ public class LazerActivity extends BaseActivity implements LazerMvpView {
         }
         else {
             // Keyboard
-
+            edtBarcodeText.setText("");
+            edtBarcodeText.requestFocus();
             hideKeyboard();
             switch (islemTipi) {
                 case AppConstants.YUKLEME:
@@ -147,11 +158,20 @@ public class LazerActivity extends BaseActivity implements LazerMvpView {
         }
     }
 
+    @Override
+    public void focusText(){
+        edtBarcodeText.setText("");
+        edtBarcodeText.requestFocus();
+    }
+
     @OnClick(R.id.btn_sefer_okut)
     public void onBtnSeferOkutClicked() {
         Intent intent = ShipmentLazerActivity.getStartIntent(this);
         intent.putExtra("islemTipi", islemTipi);
         startActivity(intent);
     }
-
+    @Override
+    public void showTokenExpired(){
+        BaseActivity.showTokenExpired(LazerActivity.this,"Oturum süresi doldu. Tekrar giriş yapınız","UYARI");
+    }
 }

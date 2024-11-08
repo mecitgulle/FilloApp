@@ -99,5 +99,10 @@ public class ApplicationModule {
         return appPreferencesHelper;
     }
 
+    @Provides
+    @Singleton
+    AppDbHelper provideAppDbHelper(@ApplicationContext Context context) {
+        return new AppDbHelper(context);
+    }
     //endregion Preferences Modules
 }

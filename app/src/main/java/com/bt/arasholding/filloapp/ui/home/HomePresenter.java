@@ -1,22 +1,12 @@
 package com.bt.arasholding.filloapp.ui.home;
 
-import com.androidnetworking.error.ANError;
 import com.bt.arasholding.filloapp.data.DataManager;
-import com.bt.arasholding.filloapp.data.model.Barcode;
 import com.bt.arasholding.filloapp.data.network.model.CargoMovementRequest;
 import com.bt.arasholding.filloapp.data.network.model.Sefer;
 import com.bt.arasholding.filloapp.di.PerActivity;
 import com.bt.arasholding.filloapp.ui.base.BasePresenter;
 import com.bt.arasholding.filloapp.utils.AppConstants;
 import com.bt.arasholding.filloapp.utils.AppLogger;
-import com.simplymadeapps.quickperiodicjobscheduler.PeriodicJob;
-import com.simplymadeapps.quickperiodicjobscheduler.QuickJobFinishedCallback;
-import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJob;
-import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJobCollection;
-//import com.simplymadeapps.quickperiodicjobscheduler.PeriodicJob;
-//import com.simplymadeapps.quickperiodicjobscheduler.QuickJobFinishedCallback;
-//import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJob;
-//import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJobCollection;
 
 import java.util.List;
 
@@ -86,7 +76,7 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
     }
 
     @Override
-    public void onDrawerHatYukleme() {
+    public void onDrawerHatYukleme(String DeviceName) {
 
 //        if (getDataManager().getRememberChecked()) {
 //            if (getDataManager().getSelectedCamera()) {
@@ -97,15 +87,21 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
 //        } else {
 //            getMvpView().showDecideDialog(AppConstants.HAT_YUKLEME);
 //        }
-        if (getDataManager().getRememberChecked()) {
-            if (getDataManager().getSelectedLazer()){
-                getMvpView().openShipmentLazerActivity(AppConstants.HAT_YUKLEME);
+        if(DeviceName.equals("ZebraTechnologiesTC26"))
+        {
+            getMvpView().openShipmentLazerActivity(AppConstants.HAT_YUKLEME);
+        }
+        else {
+            if (getDataManager().getRememberChecked()) {
+                if (getDataManager().getSelectedLazer()){
+                    getMvpView().openShipmentLazerActivity(AppConstants.HAT_YUKLEME);
+                }
+                else{
+                    getMvpView().openShipmentActivity(AppConstants.HAT_YUKLEME);
+                }
+            } else {
+                getMvpView().showDecideDialog(AppConstants.HAT_YUKLEME);
             }
-            else{
-                getMvpView().openShipmentActivity(AppConstants.HAT_YUKLEME);
-            }
-        } else {
-            getMvpView().showDecideDialog(AppConstants.HAT_YUKLEME);
         }
     }
 
@@ -156,16 +152,21 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
 
 
     @Override
-    public void onDrawerDagitimClick() {
-        if (getDataManager().getRememberChecked()) {
-            if (getDataManager().getSelectedLazer()){
-                getMvpView().openShipmentLazerActivity(AppConstants.DAGITIM);
+    public void onDrawerDagitimClick(String DeviceName) {
+        if (DeviceName.equals("ZebraTechnologiesTC26"))
+        {
+            getMvpView().openShipmentLazerActivity(AppConstants.DAGITIM);
+        }else {
+            if (getDataManager().getRememberChecked()) {
+                if (getDataManager().getSelectedLazer()){
+                    getMvpView().openShipmentLazerActivity(AppConstants.DAGITIM);
+                }
+                else{
+                    getMvpView().openShipmentActivity(AppConstants.DAGITIM);
+                }
+            } else {
+                getMvpView().showDecideDialog(AppConstants.DAGITIM);
             }
-            else{
-                getMvpView().openShipmentActivity(AppConstants.DAGITIM);
-            }
-        } else {
-            getMvpView().showDecideDialog(AppConstants.DAGITIM);
         }
     }
 
@@ -318,48 +319,120 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
 //            }
 //        });
 //    }
-    @Override
-    public void initJobs() {
-        int jobId = 1;
-        QuickPeriodicJob job = new QuickPeriodicJob(jobId, new PeriodicJob() {
-            @Override
-            public void execute(QuickJobFinishedCallback callback) {
-                SomeJobClass.performJob();
-                AppLogger.d("Job yanıyor !");
-                getCompositeDisposable().add(getDataManager()
-                        .getAllBarcodes()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<List<Barcode>>() {
-                            @Override
-                            public void accept(List<Barcode> barcodeList) throws Exception {
 
-                                for (Barcode barcode : barcodeList) {
-                                    if (barcode.getIslemTipi() == 1 && barcode.getIslemSonucu().equals("")) {
-                                        AppLogger.d("Yükleme Girdi !");
-                                        yukleme(barcode.getBarcode());
-
-                                    } else if (barcode.getIslemTipi() == 2 && barcode.getIslemSonucu().equals("")) {
-                                        AppLogger.d("İndirme Girdi !");
-                                        indirme(barcode.getBarcode());
-
-                                    }
-//                                    else if (barcode.getIslemTipi() == 5) {
-//                                        hatYukleme(barcode.getBarcode());
+//    @Override
+//    public void initJobs() {
+//        int jobId = 1;
+//        QuickPeriodicJob job = new QuickPeriodicJob(jobId, new PeriodicJob() {
+//            @Override
+//            public void execute(QuickJobFinishedCallback callback) {
+//                SomeJobClass.performJob();
+//                AppLogger.d("Job yanıyor !");
+//                getCompositeDisposable().add(getDataManager()
+//                        .getAllBarcodes()
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new Consumer<List<Barcode>>() {
+//                            @Override
+//                            public void accept(List<Barcode> barcodeList) throws Exception {
+//
+//                                for (Barcode barcode : barcodeList) {
+//                                    if (barcode.getIslemTipi() == 1 && barcode.getIslemSonucu().equals("")) {
+//                                        AppLogger.d("Yükleme Girdi !");
+//                                        yukleme(barcode.getBarcode());
+//
+//                                    } else if (barcode.getIslemTipi() == 2 && barcode.getIslemSonucu().equals("")) {
+//                                        AppLogger.d("İndirme Girdi !");
+//                                        indirme(barcode.getBarcode());
 //
 //                                    }
-                                }
-                            }
-                        }, throwable -> {
+////                                    else if (barcode.getIslemTipi() == 5) {
+////                                        hatYukleme(barcode.getBarcode());
+////
+////                                    }
+//                                }
+//                            }
+//                        }, throwable -> {
+//
+//                        }));
+//                // When you have done all your work in the job, call jobFinished to release the resources
+//                callback.jobFinished();
+//            }
+//        });
+//
+//        QuickPeriodicJobCollection.addJob(job);
+//    }
 
-                        }));
-                // When you have done all your work in the job, call jobFinished to release the resources
-                callback.jobFinished();
-            }
-        });
-
-        QuickPeriodicJobCollection.addJob(job);
+    @Override
+    public void initJobs() {
+//        int jobId = 1;
+//        QuickPeriodicJob job = new QuickPeriodicJob(jobId, new PeriodicJob() {
+//            @Override
+//            public void execute(QuickJobFinishedCallback callback) {
+//                SomeJobClass.performJob();
+//                AppLogger.d("Job yanıyor !");
+//
+//                // Room'dan veri çekiyoruz
+//                getCompositeDisposable().add(getDataManager().getAllBarcodes()
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(barcodeList -> {
+//                            for (Barcode barcode : barcodeList) {
+//                                if (barcode.getIslemTipi() == 1 && barcode.getIslemSonucu().equals("")) {
+//                                    AppLogger.d("Yükleme Girdi !");
+//                                    yukleme(barcode.getBarcode());
+//                                } else if (barcode.getIslemTipi() == 2 && barcode.getIslemSonucu().equals("")) {
+//                                    AppLogger.d("İndirme Girdi !");
+//                                    indirme(barcode.getBarcode());
+//                                }
+//                            }
+//                        }, throwable -> {
+//                            // Hata durumunu ele alın
+//                            AppLogger.e("Error fetching barcodes: " + throwable.getMessage());
+//                        }));
+//
+//                // İş tamamlandığında kaynakları serbest bırakın
+//                callback.jobFinished();
+//            }
+//        });
+//
+//        QuickPeriodicJobCollection.addJob(job);
     }
+
+//    @Override
+//    public void initJobs() {
+//        int jobId = 1;
+//        QuickPeriodicJob job = new QuickPeriodicJob(jobId, new PeriodicJob() {
+//            @Override
+//            public void execute(QuickJobFinishedCallback callback) {
+//                SomeJobClass.performJob();
+//                AppLogger.d("Job yanıyor !");
+//
+//                try {
+//                    // Room'dan veri çekiyoruz
+//                    List<Barcode> barcodeList = getDataManager().getAllBarcodes();
+//                    for (Barcode barcode : barcodeList) {
+//                        if (barcode.getIslemTipi() == 1 && barcode.getIslemSonucu().equals("")) {
+//                            AppLogger.d("Yükleme Girdi !");
+//                            yukleme(barcode.getBarcode());
+//                        } else if (barcode.getIslemTipi() == 2 && barcode.getIslemSonucu().equals("")) {
+//                            AppLogger.d("İndirme Girdi !");
+//                            indirme(barcode.getBarcode());
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    // Hata durumunu ele al
+//                    AppLogger.e("Error fetching barcodes: " + e.getMessage());
+//                }
+//
+//                // İş tamamlandığında kaynakları serbest bırakın
+//                callback.jobFinished();
+//            }
+//        });
+//
+//        QuickPeriodicJobCollection.addJob(job);
+//    }
+
 
     public static class SomeJobClass {
         public static void performJob() {
@@ -481,6 +554,21 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
                                 })
         );
     }
+//    private void deleteBarcode(String barcode) {
+//        getCompositeDisposable().add(getDataManager()
+//                .deleteBarcode(barcode)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Boolean>() {
+//                    @Override
+//                    public void accept(Boolean aBoolean) throws Exception {
+//
+//                    }
+//                }, throwable -> {
+//
+//                }));
+//    }
+
     private void deleteBarcode(String barcode) {
         getCompositeDisposable().add(getDataManager()
                 .deleteBarcode(barcode)
@@ -488,13 +576,19 @@ public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> imple
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Boolean>() {
                     @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-
+                    public void accept(Boolean isDeleted) throws Exception {
+                        if (isDeleted) {
+                            getMvpView().showMessage("Barkod başarıyla silindi!");
+                        } else {
+                            getMvpView().showMessage("Silme işlemi başarısız oldu.");
+                        }
                     }
                 }, throwable -> {
-
+                    getMvpView().showMessage("Bir hata oluştu: " + throwable.getMessage());
                 }));
     }
+
+
 
     @Override
     public void setLatitude(String latitude) {

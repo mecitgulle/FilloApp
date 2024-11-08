@@ -13,4 +13,5 @@ public interface ShipmentLazerMvpView extends MvpView {
     String hatYuklemeRotaKontrolDialog(String barcode, String shipment);
     boolean isAlertDialogShowing();
     void clearBarcodeText();
+    void showTokenExpired();
 }

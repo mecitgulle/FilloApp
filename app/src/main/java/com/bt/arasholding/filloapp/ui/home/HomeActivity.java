@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.bt.arasholding.filloapp.ui.shipment.lazer.ShipmentLazerActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,11 +35,15 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
@@ -58,7 +64,8 @@ import com.bt.arasholding.filloapp.ui.textbarcode.TextBarcodeActivity;
 import com.bt.arasholding.filloapp.utils.AppConstants;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.rey.material.widget.CheckBox;
-import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJobScheduler;
+//import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJobScheduler;
+//import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJobScheduler;
 //import com.simplymadeapps.quickperiodicjobscheduler.QuickPeriodicJobScheduler;
 
 import javax.inject.Inject;
@@ -71,6 +78,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     private static final String TAG = "HomeActivity";
     private static int mJobId = 0;
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
     @Inject
     HomeMvpPresenter<HomeMvpView> mPresenter;
     @BindView(R.id.card_yukleme)
@@ -126,6 +134,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     public JobScheduler jobScheduler;
     public JobInfo jobInfo;
 
+    String DeviceName;
+
     boolean isRead = true;
     boolean isForceUpdate = true;
 
@@ -144,11 +154,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         mPresenter.onAttach(HomeActivity.this);
 
-        int oneSecond = 1000;
-        QuickPeriodicJobScheduler jobScheduler = new QuickPeriodicJobScheduler(this);
-        jobScheduler.start(1, 60 * 1000L); // Run job with jobId=1 every 60 seconds 5*60*1000L(5dk)
+        DeviceName = getDeviceName();
+
+//        int oneSecond = 1000;
+//        QuickPeriodicJobScheduler jobScheduler = new QuickPeriodicJobScheduler(this);
+//        jobScheduler.start(1, 60 * 1000L); // Run job with jobId=1 every 60 seconds 5*60*1000L(5dk)
 
         getCurrentLocation();
+        
         setUp();
     }
     @Override
@@ -171,6 +184,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         {
             changeCardViewVisibility(Id);
         }
+        launchActivityBluetooth();
     }
 
     private void changeCardViewVisibility(String Id) {
@@ -179,10 +193,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         {
             gridLayout.removeViewAt(5);
             gridLayout.removeViewAt(5);
-            gridLayout.removeViewAt(5);
-            gridLayout.removeViewAt(5);
-            gridLayout.removeViewAt(9);
-            gridLayout.removeViewAt(9);
+            gridLayout.removeViewAt(6);
+            gridLayout.removeViewAt(10);
+            gridLayout.removeViewAt(10);
         }
         else{
             gridLayout.removeViewAt(5);
@@ -269,13 +282,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             mPresenter.onDrawerIndirmeClick();
             return true;
         } else if (id == R.id.nav_dagitim) {
-            mPresenter.onDrawerDagitimClick();
+            mPresenter.onDrawerDagitimClick(DeviceName);
             return true;
         } else if (id == R.id.nav_atf_teslimat) {
             mPresenter.onDrawerAtfTeslimatClick();
-            return true;
-        } else if (id == R.id.nav_toplu_teslimat) {
-            mPresenter.onDrawerTopluTeslimatClick();
             return true;
         } else if (id == R.id.nav_arac_cikis) {
             mPresenter.onDrawerAracCikisClick();
@@ -290,7 +300,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             mPresenter.onDrawerCargoMovementClick();
             return true;
         } else if (id == R.id.nav_hat_yukleme) {
-            mPresenter.onDrawerHatYukleme();
+            mPresenter.onDrawerHatYukleme(DeviceName);
             return true;
         } else if (id == R.id.nav_devir) {
             mPresenter.onDrawerDevir();
@@ -315,6 +325,35 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         if (drawerLayout != null) {
             drawerLayout.closeDrawer(Gravity.START);
         }
+    }
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        }
+        return capitalize(manufacturer) + "" + model.replace(" ","");
+    }
+    private static String capitalize(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return str;
+        }
+        char[] arr = str.toCharArray();
+        boolean capitalizeNext = true;
+
+        StringBuilder phrase = new StringBuilder();
+        for (char c : arr) {
+            if (capitalizeNext && Character.isLetter(c)) {
+                phrase.append(Character.toUpperCase(c));
+                capitalizeNext = false;
+                continue;
+            } else if (Character.isWhitespace(c)) {
+                capitalizeNext = true;
+            }
+            phrase.append(c);
+        }
+
+        return phrase.toString().replace(" ","");
     }
 
     @OnClick({
@@ -343,7 +382,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 mPresenter.onDrawerIndirmeClick();
                 break;
             case R.id.card_dagitim:
-                mPresenter.onDrawerDagitimClick();
+                mPresenter.onDrawerDagitimClick(DeviceName);
                 break;
             case R.id.card_atf_teslimat:
                 mPresenter.onDrawerAtfTeslimatClick();
@@ -361,7 +400,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 mPresenter.onDrawerBarcodePrinterClick();
                 break;
             case R.id.card_hat_yukleme:
-                mPresenter.onDrawerHatYukleme();
+                mPresenter.onDrawerHatYukleme(DeviceName);
                 break;
             case R.id.card_atf_devir:
                 mPresenter.onDrawerDevir();
@@ -439,6 +478,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             } else if (islemTipi.equals(AppConstants.ATFTESLIMAT)) {
 //                mPresenter.onDrawerAtfTeslimatClick();
                 openDeliveryActivity(AppConstants.ATFTESLIMAT);
+            }
+            else if (islemTipi.equals(AppConstants.ATFDEVIR)) {
+//                mPresenter.onDrawerAtfTeslimatClick();
+                openDeliveryActivity(AppConstants.ATFDEVIR);
             } else if (islemTipi.equals(AppConstants.YUKLEMEINDIRMEHARAKET)) {
 
                 openDeliveryActivity(AppConstants.YUKLEMEINDIRMEHARAKET);
@@ -450,7 +493,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
                 openDeliverMultipleCustomerActivity(AppConstants.MUSTERITESLIMAT);
 
-            }else {
+            }
+            else {
                 if (spinner.getSelectedIndex() == 1) {
                     mPresenter.openTextBarcodeActivity(islemTipi);
                 }
@@ -731,5 +775,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             konumYoneticisi.requestLocationUpdates("gps", 5000, 0, locationListener);
         }
 
+    }
+
+    public void launchActivityBluetooth()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
+                != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN}, 2);
+        }
     }
 }

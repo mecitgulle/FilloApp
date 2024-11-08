@@ -20,17 +20,27 @@ public class SettingsPresenter<V extends SettingsMvpView> extends BasePresenter<
 
     @Override
     public void setSelectedCamera(boolean checked) {
+
+        boolean unchecked = false;
+        getDataManager().setSelectedBluetooth(unchecked);
         getDataManager().setSelectedCamera(checked);
+        getDataManager().setSelectedLazer(unchecked);
     }
 
     @Override
     public void setSelectedBluetooth(boolean checked) {
+        boolean unchecked = false;
         getDataManager().setSelectedBluetooth(checked);
+        getDataManager().setSelectedCamera(unchecked);
+        getDataManager().setSelectedLazer(unchecked);
     }
 
     @Override
     public void setSelectedLazer(boolean checked) {
+        boolean unchecked = false;
         getDataManager().setSelectedLazer(checked);
+        getDataManager().setSelectedCamera(unchecked);
+        getDataManager().setSelectedBluetooth(unchecked);
     }
 
 
@@ -41,12 +51,19 @@ public class SettingsPresenter<V extends SettingsMvpView> extends BasePresenter<
     }
 
     @Override
-    public void onViewPrepared() {
-        getMvpView().updateSelectedCamera(getDataManager().getSelectedCamera());
-        getMvpView().updateSelectedBluetooth(getDataManager().getSelectedBluetooth());
-        getMvpView().updateSelectedLazer(getDataManager().getSelectedLazer());
+    public void onViewPrepared(String deviceName) {
+        if (deviceName.equals("ZebraTechnologiesTC26"))
+        {
+            boolean selectedLazer = true;
+            getMvpView().updateSelectedLazer(selectedLazer);
+        }
+        else{
+            getMvpView().updateSelectedLazer(getDataManager().getSelectedLazer());
+            getMvpView().updateSelectedCamera(getDataManager().getSelectedCamera());
+            getMvpView().updateSelectedBluetooth(getDataManager().getSelectedBluetooth());
 //        getMvpView().updateSelectedCamera(getDataManager().getSelectedCamera());
-        getMvpView().setSelectedBluetoothDevice(getDataManager().getCurrentBluetoothPairedDeviceName());
+            getMvpView().setSelectedBluetoothDevice(getDataManager().getCurrentBluetoothPairedDeviceName());
+        }
 
     }
 }

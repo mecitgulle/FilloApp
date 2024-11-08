@@ -10,5 +10,5 @@ public interface SettingsMvpPresenter<V extends SettingsMvpView> extends MvpPres
 
     void setSelectedBluetoothDeviceName(String bluetoohDevice);
 
-    void onViewPrepared();
+    void onViewPrepared(String deviceName);
 }

@@ -6,6 +6,7 @@ import com.bt.arasholding.filloapp.data.DataManager;
 import com.bt.arasholding.filloapp.data.network.model.CargoBarcodeTextRequest;
 import com.bt.arasholding.filloapp.di.PerActivity;
 import com.bt.arasholding.filloapp.ui.base.BasePresenter;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 import javax.net.ssl.HttpsURLConnection;
@@ -36,6 +37,9 @@ public class BarcodePrinterPresenter<V extends BarcodePrinterMvpView> extends Ba
         request.setBarcodetype(barkodTipi);
         request.setBarkod(barcode);
         request.setMobilprintername(getDataManager().getCurrentBluetoothPairedDeviceName());
+
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
 
         getCompositeDisposable().add(getDataManager()
                 .getCargoBarcodeTextApiCall(request)

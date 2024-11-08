@@ -19,4 +19,5 @@ public interface CargoMovementMvpView extends MvpView {
     void updateSubeIndirme(int subeIndirme);
     void updateSubeDagitim(int subeDagitim);
     void updateSubeIndirme2(int indirme);
+    void showTokenExpired();
 }

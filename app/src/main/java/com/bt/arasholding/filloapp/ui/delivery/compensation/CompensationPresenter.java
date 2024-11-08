@@ -14,6 +14,7 @@ import com.bt.arasholding.filloapp.ui.base.BasePresenter;
 import com.bt.arasholding.filloapp.ui.delivery.multidelivery.MultiDeliveryMvpPresenter;
 import com.bt.arasholding.filloapp.ui.delivery.multidelivery.MultiDeliveryMvpView;
 import com.bt.arasholding.filloapp.utils.AppConstants;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,11 @@ public class CompensationPresenter<V extends CompensationMvpView> extends BasePr
         CargoDetailRequest request = new CargoDetailRequest(getDataManager().getAccessToken());
 
 //        request.setAtfId(barcode);
-        if (isBarcode) {
+        if (barcode.length() == 34)
+        {
             request.setAtfId(barcode);
-        } else {
+        }
+        else if (barcode.length() == 7) {
             request.setAtfNo(barcode);
         }
         request.setTeslimatKapatma(false);
@@ -167,6 +170,8 @@ public class CompensationPresenter<V extends CompensationMvpView> extends BasePr
         }
         request.setToken(getDataManager().getAccessToken());
         getMvpView().showLoading();
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
 
         if (tazminNo.isEmpty())
         {

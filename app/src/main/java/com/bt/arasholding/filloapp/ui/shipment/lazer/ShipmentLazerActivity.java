@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.KeyEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -79,8 +80,20 @@ public class ShipmentLazerActivity extends BaseActivity implements
 
         mPresenter.onAttach(this);
 
-        setUp();
+        edt_sefer_no.setText("");
+        edt_sefer_no.setFocusableInTouchMode(true);
+        edt_sefer_no.setFocusable(true);
         edt_sefer_no.requestFocus();
+
+        edt_sefer_no.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edt_sefer_no.getWindowToken(), 0);
+            }
+        }, 100);
+
+        setUp();
 
 
     }
@@ -92,11 +105,13 @@ public class ShipmentLazerActivity extends BaseActivity implements
             islemTipi = getIntent().getStringExtra("islemTipi");
         }
         updateToolbarTitle();
-        edt_sefer_no.setText("");
+
         edtBarcodeText.setText("");
 
-
-        recyclerBarcodeList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);  // Son eklenen en üstte olacak
+        layoutManager.setStackFromEnd(true);   // Liste en sondan başlayarak dizilecek
+        recyclerBarcodeList.setLayoutManager(layoutManager);
         recyclerBarcodeList.setHasFixedSize(true);
         mPresenter.deleteBarcodes(islemTipi);
     }
@@ -119,6 +134,11 @@ public class ShipmentLazerActivity extends BaseActivity implements
         if (!edt_sefer_no.getText().toString().isEmpty()) {
             mPresenter.getShipmentInformationByShipmentBarcode(edt_sefer_no.getText().toString(), islemTipi);
             edtBarcodeText.requestFocus();
+            edtBarcodeText.setFocusableInTouchMode(true);
+            edtBarcodeText.setFocusable(true);
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(edtBarcodeText.getWindowToken(), 0);
         }
         mPresenter.deleteBarcodes(islemTipi);
     }
@@ -146,8 +166,13 @@ public class ShipmentLazerActivity extends BaseActivity implements
             // Barcode finger scanner
 
             if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                edt_sefer_no.setText("");
                 mPresenter.getShipmentInformationByShipmentBarcode(textSeferBarcode, islemTipi);
+                edt_sefer_no.setText("");
+                edt_sefer_no.setFocusableInTouchMode(true);
+                edt_sefer_no.setFocusable(true);
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edt_sefer_no.getWindowToken(), 0);
             }
         } else {
             // Keyboard
@@ -173,7 +198,6 @@ public class ShipmentLazerActivity extends BaseActivity implements
             // Barcode finger scanner
 
             if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                edt_sefer_no.setText("");
 //                edtBarcodeText.clearFocus();
                 if (islemTipi.equals(AppConstants.DAGITIM))
                     mPresenter.dagitim(textBarcode);
@@ -207,6 +231,11 @@ public class ShipmentLazerActivity extends BaseActivity implements
     public void incrementCount() {
         edtBarcodeText.setText("");
         edtBarcodeText.requestFocus();
+        edtBarcodeText.setFocusableInTouchMode(true);
+        edtBarcodeText.setFocusable(true);
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(edtBarcodeText.getWindowToken(), 0);
         txtSayac.setText(String.format("%s", ++currentCount));
     }
 
@@ -264,6 +293,12 @@ public class ShipmentLazerActivity extends BaseActivity implements
     public void clearBarcodeText() {
         edtBarcodeText.setText("");
         edtBarcodeText.requestFocus();
+
+        edtBarcodeText.setFocusableInTouchMode(true);
+        edtBarcodeText.setFocusable(true);
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(edtBarcodeText.getWindowToken(), 0);
     }
 
     @Override
@@ -274,6 +309,11 @@ public class ShipmentLazerActivity extends BaseActivity implements
 
         isShipmentBarcode = false; // Dağıtım ve hat yükleme okutması durumu için hazır hale getirilir
         edtBarcodeText.requestFocus();
+    }
+
+    @Override
+    public void showTokenExpired(){
+        BaseActivity.showTokenExpired(ShipmentLazerActivity.this,"Oturum süresi doldu. Tekrar giriş yapınız","UYARI");
     }
 
 }

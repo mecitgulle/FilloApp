@@ -105,7 +105,13 @@ public class ShipmentPresenter<V extends ShipmentMvpView> extends BasePresenter<
         getMvpView().hideKeyboard();
 
         TrackingRequest request = new TrackingRequest(getDataManager().getAccessToken());
-        request.setSeferId(shipmentId);
+        if (shipmentId.length() == 28)
+        {
+            request.setSeferBarkodu(shipmentId);
+        }
+        else{
+            request.setSeferId(shipmentId);
+        }
 
         getCompositeDisposable().add(getDataManager()
                 .doTrackingApiCall(request)
@@ -162,7 +168,7 @@ public class ShipmentPresenter<V extends ShipmentMvpView> extends BasePresenter<
 
         if (getDataManager().getSelectedCamera()) {
             getMvpView().showCameraScanner();
-        } else {
+        } else if (getDataManager().getSelectedBluetooth()) {
             deleteBarcodes();
             getMvpView().showBluetoothScanner();
         }
@@ -619,19 +625,29 @@ public class ShipmentPresenter<V extends ShipmentMvpView> extends BasePresenter<
 
                 }));
     }
+//public void refreshList(int islemTipi) {
+//    try {
+//        List<Barcode> barcodeList = getDataManager().getBarcodesByIslemTipi(islemTipi);
+//        // UI'yi güncellemek için gerekli işlemleri yap
+//        getMvpView().updateBarcodeList(barcodeList);
+//    } catch (Exception e) {
+//        // Hata durumunu ele al
+//    }
+//}
 
-    private void updateBarcodebyBarcodeType(Barcode barcode) {
-        getCompositeDisposable().add(getDataManager()
-                .updateBarcodebyBarcodeType(barcode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        refreshList(barcode.getIslemTipi());
-                    }
-                }, throwable -> {
 
-                }));
-    }
+//    private void updateBarcodebyBarcodeType(Barcode barcode) {
+//        getCompositeDisposable().add(getDataManager()
+//                .updateBarcodebyBarcodeType(barcode)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Boolean>() {
+//                    @Override
+//                    public void accept(Boolean aBoolean) throws Exception {
+//                        refreshList(barcode.getIslemTipi());
+//                    }
+//                }, throwable -> {
+//
+//                }));
+//    }
 }

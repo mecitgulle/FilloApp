@@ -1,8 +1,14 @@
 package com.bt.arasholding.filloapp.data.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "Barcode")
 public class Barcode {
 
+    @PrimaryKey(autoGenerate = true)
     private long id;
+
     private String atfId;
     private String barcode;
     private int islemTipi;
@@ -12,6 +18,16 @@ public class Barcode {
     private String alici_adi;
     private String evrakDonusluMu;
     private String atf_id;
+    private String toplam_parca;
+    private double dagitim_var_mi;
+
+    public String getToplam_parca() {
+        return toplam_parca;
+    }
+
+    public void setToplam_parca(String toplam_parca) {
+        this.toplam_parca = toplam_parca;
+    }
 
     public long getId() {
         return id;
@@ -46,9 +62,6 @@ public class Barcode {
     }
 
     public String getIslemSonucu() {
-        if (islemSonucu==null){
-            islemSonucu="";
-        }
         return islemSonucu;
     }
 
@@ -95,4 +108,13 @@ public class Barcode {
     public void setAtf_id(String atf_id) {
         this.atf_id = atf_id;
     }
+
+    public double getDagitim_var_mi() {
+        return dagitim_var_mi;
+    }
+
+    public void setDagitim_var_mi(double dagitim_var_mi) {
+        this.dagitim_var_mi = dagitim_var_mi;
+    }
+// Getter ve Setter metodları burada yer alacak
 }

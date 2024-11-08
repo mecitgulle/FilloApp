@@ -23,4 +23,5 @@ public interface CompensationMvpView extends MvpView {
     void dispatchTakePictureIntent(String id);
     void sendBarcode(String barcode,boolean isBarcode);
     void redirect();
+    void showTokenExpired();
 }

@@ -4,9 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.TextUtils;
 import android.widget.RadioButton;
 
 import com.bt.arasholding.filloapp.R;
@@ -73,7 +76,38 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
 
         updateBluetoothSpanner(getBluetoothDeviceNames());
 
-        mPresenter.onViewPrepared();
+        String DeviceName = getDeviceName();
+
+        mPresenter.onViewPrepared(DeviceName);
+    }
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        }
+        return capitalize(manufacturer) + "" + model.replace(" ","");
+    }
+    private static String capitalize(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return str;
+        }
+        char[] arr = str.toCharArray();
+        boolean capitalizeNext = true;
+
+        StringBuilder phrase = new StringBuilder();
+        for (char c : arr) {
+            if (capitalizeNext && Character.isLetter(c)) {
+                phrase.append(Character.toUpperCase(c));
+                capitalizeNext = false;
+                continue;
+            } else if (Character.isWhitespace(c)) {
+                capitalizeNext = true;
+            }
+            phrase.append(c);
+        }
+
+        return phrase.toString().replace(" ","");
     }
 
     @OnCheckedChanged({R.id.radio_button_camera})

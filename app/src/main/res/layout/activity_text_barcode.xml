@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- AppBarLayout -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -18,56 +19,73 @@
             app:subtitleTextColor="@color/white"
             app:title="@string/title_activity_textbarcode"
             app:titleTextColor="@color/white" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <RelativeLayout
-        android:layout_below="@id/appbar"
+    <!-- FrameLayout for extra content -->
+    <FrameLayout
+        android:id="@+id/frame_textBarcode"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_below="@id/appbar"/>
 
-        <FrameLayout
-            android:id="@+id/frame_textBarcode"
-            android:layout_width="match_parent"
+    <!-- LinearLayout for CheckBox and TextView -->
+    <LinearLayout
+        android:id="@+id/layout_checkbox_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/frame_textBarcode"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical">
+
+        <!-- CheckBox -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox_musteri_barkod"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_alignParentStart="true"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:buttonTint="@color/dark_gray"
+            android:fontFamily="@font/basic"
+            android:textColor="@color/gray"
+            android:text="Müşteri Barkodu" />
 
-        </FrameLayout>
-
+        <!-- TextView for count display -->
         <TextView
             android:id="@+id/txtCount"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/frame_textBarcode"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:text="0 / 0"
             android:textSize="70sp"
-            android:text="0 / 0" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerBarcodeList"
-            android:layout_below="@id/txtCount"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
-
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.manojbhadane.QButton
-            android:id="@+id/btn_sefer_okut"
-            android:layout_gravity="bottom"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Sefer Okut"
-            android:textColor="@android:color/white"
-            app:qb_backgroundColor="@color/btnBlue1"
-            app:qb_radius="0"
-            app:qb_strokeColor="@color/color_1_dark"
-            app:qb_strokeWidth="1"/>
+            android:layout_marginStart="14dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"/>
     </LinearLayout>
+
+    <!-- RecyclerView for the list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerBarcodeList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/layout_checkbox_text"
+        android:layout_above="@id/btn_sefer_okut"
+        android:layout_marginTop="16dp"
+        android:scrollbars="vertical"/>
+
+    <!-- Bottom button -->
+    <com.manojbhadane.QButton
+        android:id="@+id/btn_sefer_okut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sefer Okut"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:qb_backgroundColor="@color/btnBlue1"
+        app:qb_radius="0"
+        app:qb_strokeColor="@color/color_1_dark"
+        app:qb_strokeWidth="1"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"/>
 </RelativeLayout>

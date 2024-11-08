@@ -21,4 +21,5 @@ public interface DeliverCargoMvpView extends MvpView {
     void setSpinner(List<AtfUndeliverableReasonModel> model);
 
     void finishActivity();
+    void showTokenExpired();
 }

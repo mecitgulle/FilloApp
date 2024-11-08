@@ -29,6 +29,7 @@ import com.bt.arasholding.filloapp.data.network.model.NoBarcodeCargo;
 import com.bt.arasholding.filloapp.data.network.model.NoBarcodeSaveRequest;
 import com.bt.arasholding.filloapp.data.network.model.TazminTalepImageList;
 import com.bt.arasholding.filloapp.ui.base.BaseActivity;
+import com.bt.arasholding.filloapp.ui.camera2.CameraActivity;
 import com.bt.arasholding.filloapp.ui.delivermultiplecustomerwaybill.SpinnerAdapter;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.manojbhadane.QButton;
@@ -51,7 +52,7 @@ import butterknife.OnClick;
 public class NoBarcodeActivity extends BaseActivity implements NoBarcodeMvpView {
     @Inject
     NoBarcodeMvpPresenter<NoBarcodeMvpView> mPresenter;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 100;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -144,7 +145,7 @@ public class NoBarcodeActivity extends BaseActivity implements NoBarcodeMvpView 
         EditText edtNoBarcodeAciklama = dialogView.findViewById(R.id.edtNoBarcodeAciklama);
         TextView edtGelisTarihi = dialogView.findViewById(R.id.edtGelisTarihi);
         ImageButton btnDatePicker = dialogView.findViewById(R.id.btnDatePicker);
-        ImageButton btnTimePicker = dialogView.findViewById(R.id.btnTimePicker);
+//        ImageButton btnTimePicker = dialogView.findViewById(R.id.btnTimePicker);
         txtBarkodsuzKargo = dialogView.findViewById(R.id.txtBarkodsuzKargoFoto);
 
         ImageButton btnBarkodsuzFoto = dialogView.findViewById(R.id.btnBarkodsuzFoto);
@@ -152,7 +153,7 @@ public class NoBarcodeActivity extends BaseActivity implements NoBarcodeMvpView 
         btnBarkodsuzFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                dispatchTakePictureIntent("BarkodsuzKargo");
             }
         });
 
@@ -248,26 +249,33 @@ public class NoBarcodeActivity extends BaseActivity implements NoBarcodeMvpView 
         adapter.notifyDataSetChanged();
         recyclernoBarcodeList.setAdapter(adapter);
     }
-    public void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+
+    public void dispatchTakePictureIntent(String id) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(NoBarcodeActivity.this.getPackageManager()) != null) {
             File photoFile = null;
+
             try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
+                photoFile = createImageFile("BarkodsuzKargo"); // Dosya oluşturma
+                filePath = photoFile.getAbsolutePath(); // Dosya yolunu güncelle
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
             }
+
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        this.getPackageName() + ".provider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                uri2 = photoURI;
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                Uri photoUri = FileProvider.getUriForFile(NoBarcodeActivity.this, this.getPackageName() + ".provider", photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(intent, 100);
             }
+        } else {
+            // Kamera uygulaması yoksa
+            Intent manualCameraIntent = new Intent(NoBarcodeActivity.this, CameraActivity.class);
+            manualCameraIntent.putExtra("id", "BarkodsuzKargo");
+            startActivityForResult(manualCameraIntent, 100);
         }
     }
-    private File createImageFile() throws IOException {
-
+    private File createImageFile(String uzanti) throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "BarkodsuzKargoFoto";
         File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -277,49 +285,122 @@ public class NoBarcodeActivity extends BaseActivity implements NoBarcodeMvpView 
             image.createNewFile();
         }
 
-//        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         filePath = image.getAbsolutePath();
-
         return image;
     }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            // Fotoğraf çekimi başarılı olduğunda
+//            try {
+//                // Kendi CameraActivity'nizden dönen filePath kullanılıyor
+//                File file = new File(filePath);
+//                Bitmap imageBitmap = null;
+//                Uri uri = Uri.fromFile(file);
+//
+//                // Resmi al
+//                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+//
+//                // Resmi JPEG formatında sıkıştır ve byte dizisine çevir
+//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+//                byte[] byteArray = byteArrayOutputStream.toByteArray();
+//
+//                // Base64'e çevir
+//                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n", "").trim();
+//
+//                // Resim bilgilerini doldur
+//                BarkodsuzKargoImageList imageList = new BarkodsuzKargoImageList();
+//                imageList.setBase64String(encoded);
+//                imageList.setResimTipi("RESIM");
+//                imageList.setDosyaAdi("BarkodsuzKargoResim" + ".jpg");
+//                barkodsuzKargoImageLists.add(imageList);
+//
+//                // Görselin adını TextView'a yaz
+//                txtBarkodsuzKargo.setText("BarkodsuzResim" + ".jpg");
+//            } catch (IOException e) {
+//                Toast.makeText(this, "Resim yüklenirken hata oluştu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//            } catch (Exception e) {
+//                Toast.makeText(this, "HATA: " + e.toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        } else if (resultCode == RESULT_CANCELED) {
+//            Toast.makeText(this, "Fotoğraf çekmeden çıktınız.", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "HATA: Fotoğraf çekilemedi.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            String id = extras.getString("id");
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            try {
-                File file = new File(filePath);
-                Bitmap imageBitmap = null;
-                Uri uri = Uri.fromFile(file);
+        super.onActivityResult(requestCode, resultCode, data); // Unutma! Bu satırı eklemelisin
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            // Eğer resim kendi CameraActivity'nden geldiyse
+            if (data != null && data.hasExtra("image_path")) {
+                filePath = data.getStringExtra("image_path"); // image_path'i al ve filePath'ı güncelle
+
+                // Burada filePath kullanarak resmi yükleyin
                 try {
-                    imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-//                        bitmap = getResizedBitmap(bitmap, 25, 25);
+                    File file = new File(filePath); // filePath burada tanımlı
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(NoBarcodeActivity.this.getContentResolver(), Uri.fromFile(file));
+
+                    // Resmi JPEG formatında sıkıştır ve byte dizisine çevir
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                    // Base64'e çevir ve gereksiz karakterleri temizle
+                    String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n", "").trim();
+
+                    // Resim tipine göre uygun alanları doldur
+                    BarkodsuzKargoImageList imageList = new BarkodsuzKargoImageList();
+                    imageList.setBase64String(encoded);
+                    imageList.setResimTipi("RESIM");
+                    imageList.setDosyaAdi("BarkodsuzKargoResim" + ".jpg");
+                    barkodsuzKargoImageLists.add(imageList);
+                    txtBarkodsuzKargo.setText("BarkodsuzResim" + ".jpg");
+
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Toast.makeText(this, "Resim yüklenirken hata oluştu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Hata: " + e.toString(), Toast.LENGTH_SHORT).show();
                 }
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
+            } else {
+                // Eğer varsayılan kamera ile çekim yapılmışsa
+                // Burada filePath kullanarak resmi yükleyin (bu durumda filePath daha önce güncellenmiş olmalı)
+                try {
+                    File file = new File(filePath);
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(file));
 
-                encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                BarkodsuzKargoImageList imageList = new BarkodsuzKargoImageList();
-                imageList.setBase64String(encoded);
-                imageList.setResimTipi("RESIM");
-                imageList.setDosyaAdi("BarkodsuzKargoResim" + ".jpg");
-                barkodsuzKargoImageLists.add(imageList);
-                txtBarkodsuzKargo.setText("BarkodsuzResim" + ".jpg");
-            } catch (Exception e) {
-                Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+                    // Resmi JPEG formatında sıkıştır ve byte dizisine çevir
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                    // Base64'e çevir ve gereksiz karakterleri temizle
+                    String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n", "").trim();
+
+                    // Resim tipine göre uygun alanları doldur
+                    BarkodsuzKargoImageList imageList = new BarkodsuzKargoImageList();
+                    imageList.setBase64String(encoded);
+                    imageList.setResimTipi("RESIM");
+                    imageList.setDosyaAdi("BarkodsuzKargoResim" + ".jpg");
+                    barkodsuzKargoImageLists.add(imageList);
+                    txtBarkodsuzKargo.setText("BarkodsuzResim" + ".jpg");
+                } catch (IOException e) {
+                    Toast.makeText(this, "Resim yüklenirken hata oluştu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Hata: " + e.toString(), Toast.LENGTH_SHORT).show();
+                }
             }
-
         } else if (resultCode == RESULT_CANCELED) {
-            Toast.makeText(this, "Fotağraf çekmeden çıktınız.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Fotoğraf çekmeden çıktınız.", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "HATA:Fotağraf çekilemedi.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "HATA: Fotoğraf çekilemedi.", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void dosyalariSil() {
 
         File directory = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);

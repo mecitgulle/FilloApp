@@ -70,6 +70,9 @@ public class DeliveredCargoRequest implements Serializable {
     @Expose
     private String customerBarcode;
 
+    @SerializedName("TESLIMADET")
+    @Expose
+    private String teslimadet;
 
     @SerializedName("AtfModelList")
     @Expose
@@ -209,6 +212,14 @@ public class DeliveredCargoRequest implements Serializable {
 
     public void setCustomerBarcode(String customerBarcode) {
         this.customerBarcode = customerBarcode;
+    }
+
+    public String getTeslimadet() {
+        return teslimadet;
+    }
+
+    public void setTeslimadet(String teslimadet) {
+        this.teslimadet = teslimadet;
     }
 //    @SerializedName("AtfModelList")
 //    @Expose

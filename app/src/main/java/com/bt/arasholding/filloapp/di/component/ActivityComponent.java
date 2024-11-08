@@ -6,6 +6,7 @@ import com.bt.arasholding.filloapp.ui.about.AboutFragment;
 import com.bt.arasholding.filloapp.ui.barcodeprinter.BarcodePrinterActivity;
 import com.bt.arasholding.filloapp.ui.bluetooth.BluetoothFragment;
 import com.bt.arasholding.filloapp.ui.camera.CameraFragment;
+import com.bt.arasholding.filloapp.ui.camera2.CameraActivity;
 import com.bt.arasholding.filloapp.ui.cargobarcode.CargoBarcodeActivity;
 import com.bt.arasholding.filloapp.ui.delivercargo.DeliverCargoActivity;
 import com.bt.arasholding.filloapp.ui.delivermultiplecustomerwaybill.DeliverMultipleCustomerActivity;
@@ -86,4 +87,5 @@ public interface ActivityComponent {
     void inject(DeliverMultipleCustomerActivity deliverMultipleCustomerActivity);
 
     void inject(NoBarcodeActivity noBarcodeActivity);
+    void inject(CameraActivity cameraActivity);
 }

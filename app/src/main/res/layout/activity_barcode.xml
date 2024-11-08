@@ -9,51 +9,64 @@
     <FrameLayout
         android:id="@+id/frame_scanner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_margin="16dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/txtSayac"
-                android:layout_gravity="end"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- CheckBox ve Sayaç için yatay LinearLayout -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+
+            <!-- CheckBox sol başta ve dikey ortalanmış -->
+            <CheckBox
+                android:id="@+id/check_musteriBarkod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:text="Müşteri Barkodu"
+                android:textColor="@android:color/white" />
+
+            <!-- Sayaç TextView, sağda ve uzak duracak şekilde konumlandırılmış -->
+            <TextView
+                android:id="@+id/txtSayac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:text="0"
                 android:textColor="@android:color/white"
                 android:textSize="96sp" />
 
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.manojbhadane.QButton
-            android:id="@+id/btn_sefer_okut"
-            android:layout_gravity="bottom"
-            android:layout_margin="10dp"
+        </RelativeLayout>
+
+        <!-- Alt kısım buton -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:visibility="gone"
-            android:text="Sefer Okut"
-            android:textColor="@android:color/white"
-            app:qb_backgroundColor="@color/btnBlue1"
-            app:qb_radius="0"
-            app:qb_strokeColor="@color/color_1_dark"
-            app:qb_strokeWidth="1"/>
+            android:layout_height="match_parent">
+
+            <com.manojbhadane.QButton
+                android:id="@+id/btn_sefer_okut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:text="Sefer Okut"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:qb_backgroundColor="@color/btnBlue1"
+                app:qb_radius="0"
+                app:qb_strokeColor="@color/color_1_dark"
+                app:qb_strokeWidth="1" />
+        </LinearLayout>
+
     </LinearLayout>
-</LinearLayout>
+
 </RelativeLayout>

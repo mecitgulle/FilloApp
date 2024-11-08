@@ -2,8 +2,10 @@ package com.bt.arasholding.filloapp.ui.delivery.multidelivery;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +22,15 @@ public class MultiDeliveryRecyclerListAdapter extends RecyclerView.Adapter<Multi
 
     private List<Barcode> listBarcode = new ArrayList<>();
     private Context context;
+    private int okutmaTipi;
     private MultiDeliveryMvpView fragmentView ;
     private ImageButton btnDeleteAtf;
 
-    public MultiDeliveryRecyclerListAdapter(List<Barcode> barcodeList, Context context,MultiDeliveryMvpView fragmentView) {
+    public MultiDeliveryRecyclerListAdapter(List<Barcode> barcodeList, Context context,MultiDeliveryMvpView fragmentView,int okutmaTipi) {
         this.listBarcode = barcodeList;
         this.context = context;
         this.fragmentView = fragmentView;
+        this.okutmaTipi = okutmaTipi;
     }
 
     @NonNull
@@ -39,42 +43,64 @@ public class MultiDeliveryRecyclerListAdapter extends RecyclerView.Adapter<Multi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MultiDeliveryRecyclerViewHolder barcodeViewHolder, int i) {
-        barcodeViewHolder.txtAlici.setText(listBarcode.get(i).getAlici_adi());
-        barcodeViewHolder.txt_atf_no.setText(listBarcode.get(i).getAtf_no());
-        barcodeViewHolder.txtSonuc.setText(listBarcode.get(i).getIslemSonucu());
+    public void onBindViewHolder(@NonNull MultiDeliveryRecyclerViewHolder barcodeViewHolder, int position) {
+        barcodeViewHolder.txtAlici.setText(listBarcode.get(position).getAlici_adi());
+        barcodeViewHolder.txt_atf_no.setText(listBarcode.get(position).getAtf_no());
+        barcodeViewHolder.txtSonuc.setText(listBarcode.get(position).getIslemSonucu());
+        if (okutmaTipi == 1)
+        {
+            if (listBarcode.get(position).getBarcode() != null){
+                String barkod = listBarcode.get(position).getBarcode();
+                String pieceNumberWithZeros = barkod.substring(27, 30);
+                int pieceNumber = Integer.parseInt(pieceNumberWithZeros);
+                String parcaNo = String.valueOf(pieceNumber);
+
+                barcodeViewHolder.btnDeleteDelivery.setVisibility(View.GONE);
+                barcodeViewHolder.txt_parca_no.setVisibility(View.VISIBLE);
+                barcodeViewHolder.txt_parca_no.setText(Html.fromHtml("<b>Parça No:</font></b> " + String.valueOf(parcaNo)));
+            }
+            else{
+                barcodeViewHolder.txt_parca_no.setVisibility(View.GONE);
+            }
+        }
+        else if (okutmaTipi == 2)
+        {
+            barcodeViewHolder.btnDeleteDelivery.setVisibility(View.VISIBLE);
+            if (listBarcode.get(position).getToplam_parca() != null) {
+                barcodeViewHolder.txt_parca_no.setText(Html.fromHtml("<b>Toplam Parça:</font></b> " + String.valueOf(listBarcode.get(position).getToplam_parca())));
+            }
+            barcodeViewHolder.btnDeleteDelivery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // `deleteAtf` metodunu çağırın
+                    fragmentView.deleteAtf(listBarcode.get(position).getAtfId(),okutmaTipi);
+                }
+            });
+        }
 
         barcodeViewHolder.rdAlindi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                fragmentView.setAlindiMi(listBarcode.get(i).getId(),isChecked ? "ALINDI" : "ALINMADI");
+                fragmentView.setAlindiMi(listBarcode.get(position).getId(),isChecked ? "ALINDI" : "ALINMADI");
             }
         });
 
             barcodeViewHolder.rdAlinmadi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                fragmentView.setAlindiMi(listBarcode.get(i).getId(),!isChecked ? "ALINDI" : "ALINMADI");
-            }
-        });
-        barcodeViewHolder.btnDeleteAtf.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v) {
-                fragmentView.deleteAtf(listBarcode.get(i).getAtfId(), listBarcode.get(i).getIslemTipi() );
+                fragmentView.setAlindiMi(listBarcode.get(position).getId(),!isChecked ? "ALINDI" : "ALINMADI");
             }
         });
 
-        if (listBarcode.get(i).getEvrakDonusluMu() != null){
-            if (listBarcode.get(i).getEvrakDonusluMu().equals("EVET")){
+        if (listBarcode.get(position).getEvrakDonusluMu() != null){
+            if (listBarcode.get(position).getEvrakDonusluMu().equals("EVET")){
                 barcodeViewHolder.layout_evrak_donus.setVisibility(View.VISIBLE);
                 barcodeViewHolder.btnlayout.setVisibility(View.VISIBLE);
             }else{
-                barcodeViewHolder.layout_evrak_donus.setVisibility(View.INVISIBLE);
+                barcodeViewHolder.layout_evrak_donus.setVisibility(View.GONE);
             }
         }
-        if(listBarcode.get(i).getIslemSonucu() != null)
+        if(listBarcode.get(position).getIslemSonucu() != null)
         {
             barcodeViewHolder.txtSonuc.setVisibility(View.VISIBLE);
         }
@@ -86,9 +112,14 @@ public class MultiDeliveryRecyclerListAdapter extends RecyclerView.Adapter<Multi
 
             @Override
             public void onClick(View v) {
-                fragmentView.dispatchTakePictureIntent(listBarcode.get(i).getAtfId());
+                fragmentView.dispatchTakePictureIntent(listBarcode.get(position).getAtfId());
             }
         });
+        if (listBarcode.get(position).getDagitim_var_mi() == 0 )
+        {
+            barcodeViewHolder.txt_dagitim_varmi.setText("Dağıtım Okutması Yok!");
+            barcodeViewHolder.txt_dagitim_varmi.setTextColor(ContextCompat.getColor(context, R.color.red_dark2));
+        }
 //        barcodeViewHolder.btnComment.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

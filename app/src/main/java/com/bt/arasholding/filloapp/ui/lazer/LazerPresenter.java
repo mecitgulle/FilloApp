@@ -70,9 +70,22 @@ public class LazerPresenter<V extends LazerMvpView> extends BasePresenter<V> imp
 
                                     if (cargoMovementResponse.getStatusCode().equals(String.valueOf(HttpsURLConnection.HTTP_OK))) {
                                         getMvpView().updateSayac();
+                                        getMvpView().focusText();
                                     } else {
                                         getMvpView().showMessage(cargoMovementResponse.getMessage());
-                                        getMvpView().vibrate();
+                                        if (cargoMovementResponse.getMessage().equals("BARKOD Hatalı!"))
+                                        {
+                                            getMvpView().vibrate2(cargoMovementResponse.getMessage());
+                                        }
+                                        else if (cargoMovementResponse.getMessage().equals("Bu koli okutulmuş! Aynı koli etiketi ihtimali! Koliyi ve Etiketi kontrol edin !")) {
+                                            getMvpView().vibrate2("Daha Önce Okutuldu");
+                                        }
+
+                                        else{
+                                            getMvpView().vibrate();
+                                        }
+                                        getMvpView().focusText();
+
                                     }
 
                                 }, throwable -> {
@@ -138,9 +151,18 @@ public class LazerPresenter<V extends LazerMvpView> extends BasePresenter<V> imp
 
                                     if (cargoMovementResponse.getStatusCode().equals(String.valueOf(HttpsURLConnection.HTTP_OK))) {
                                         getMvpView().updateSayac();
+                                        getMvpView().focusText();
                                     } else {
                                         getMvpView().showMessage(cargoMovementResponse.getMessage());
-                                        getMvpView().vibrate();
+                                        if (cargoMovementResponse.getMessage().equals("BARKOD Hatalı!"))
+                                        {
+                                            getMvpView().vibrate2(cargoMovementResponse.getMessage());
+                                        } else if (cargoMovementResponse.getMessage().equals("Bu koli okutulmuş! Aynı koli etiketi ihtimali! Koliyi ve Etiketi kontrol edin !")) {
+                                            getMvpView().vibrate2("Daha Önce Okutuldu");
+                                        } else{
+                                            getMvpView().vibrate();
+                                        }
+                                        getMvpView().focusText();
                                     }
 
                                 }, throwable -> {
@@ -171,25 +193,25 @@ public class LazerPresenter<V extends LazerMvpView> extends BasePresenter<V> imp
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        refreshList(barcode.getIslemTipi());
+//                        refreshList(barcode.getIslemTipi());
                     }
                 }, throwable -> {
 
                 }));
     }
 
-    public void refreshList(int islemTipi) {
-        getCompositeDisposable().add(getDataManager()
-                .getBarcodesByIslemTipi(islemTipi)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Barcode>>() {
-                    @Override
-                    public void accept(List<Barcode> barcodeList) throws Exception {
-//                        getMvpView().updateBarcodeList(barcodeList);
-                    }
-                }, throwable -> {
-
-                }));
-    }
+//    public void refreshList(int islemTipi) {
+//        getCompositeDisposable().add(getDataManager()
+//                .getBarcodesByIslemTipi(islemTipi)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<List<Barcode>>() {
+//                    @Override
+//                    public void accept(List<Barcode> barcodeList) throws Exception {
+////                        getMvpView().updateBarcodeList(barcodeList);
+//                    }
+//                }, throwable -> {
+//
+//                }));
+//    }
 }

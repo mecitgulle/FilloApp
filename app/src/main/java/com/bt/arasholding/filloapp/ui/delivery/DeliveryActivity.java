@@ -3,15 +3,22 @@ package com.bt.arasholding.filloapp.ui.delivery;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +30,7 @@ import com.bt.arasholding.filloapp.ui.bluetooth.BluetoothFragment;
 import com.bt.arasholding.filloapp.ui.camera.CameraFragment;
 import com.bt.arasholding.filloapp.ui.cargobarcode.CargoBarcodeActivity;
 import com.bt.arasholding.filloapp.ui.delivercargo.DeliverCargoActivity;
+import com.bt.arasholding.filloapp.ui.delivermultiplecustomerwaybill.DeliverMultipleCustomerActivity;
 import com.bt.arasholding.filloapp.ui.delivery.cargomovement.CargoMovementFragment;
 import com.bt.arasholding.filloapp.ui.delivery.cargomovement.CargoMovementMvpView;
 import com.bt.arasholding.filloapp.ui.delivery.compensation.CompensationFragment;
@@ -30,6 +38,10 @@ import com.bt.arasholding.filloapp.ui.delivery.compensation.CompensationMvpView;
 import com.bt.arasholding.filloapp.ui.delivery.multidelivery.MultiDeliveryFragment;
 import com.bt.arasholding.filloapp.ui.delivery.multidelivery.MultiDeliveryMvpView;
 import com.bt.arasholding.filloapp.utils.AppConstants;
+
+import org.w3c.dom.Text;
+
+import java.util.HashSet;
 
 import javax.inject.Inject;
 
@@ -46,6 +58,7 @@ public class DeliveryActivity extends BaseActivity implements
     @Inject
     DeliveryMvpPresenter<DeliveryMvpView> mPresenter;
 
+    private Handler handler = new Handler();
     @BindView(R.id.edtTrackId)
     EditText edtTrackId;
     @BindView(R.id.toolbar)
@@ -54,6 +67,12 @@ public class DeliveryActivity extends BaseActivity implements
     String islemTipi = "";
     String arkodu = "";
     String noBarcodeId = "";
+
+    private HashSet<String> scannedBarcodes;
+
+    private boolean isBarcodeProcessing = false;
+    private TextWatcher barcodeTextWatcher;
+
     FragmentManager fragmentManager = getSupportFragmentManager();
 
     public static Intent getStartIntent(Context context) {
@@ -70,15 +89,52 @@ public class DeliveryActivity extends BaseActivity implements
 
         setUnBinder(ButterKnife.bind(this));
 
-        mPresenter.onAttach(this);
+        scannedBarcodes = new HashSet<>();
 
+        edtTrackId.requestFocus();
+
+        mPresenter.onAttach(this);
         setUp();
         if (islemTipi.equals(AppConstants.MUSTERITESLIMAT)) {
             RelativeLayout atfNoLayout = (RelativeLayout) findViewById(R.id.atfNo);
+            RelativeLayout musteriteslimat = (RelativeLayout) findViewById(R.id.rlt_musteriteslimat);
+            TextView MusteriTeslimatTxt = (TextView) findViewById(R.id.txtMusteriTeslimat);
+            MusteriTeslimatTxt.setVisibility(View.VISIBLE);
+            musteriteslimat.setVisibility(View.VISIBLE);
             atfNoLayout.setVisibility(View.GONE);
         }
+        setupBarcodeTextWatcher();
     }
+    private void setupBarcodeTextWatcher() {
+        barcodeTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Sadece otomatik barkod okuma durumunda işlemi tetikle
+                if (isBarcodeProcessing) {
+                    return; // Eğer barkod işleniyorsa, çık
+                }
+
+                // Eğer girilen karakter sayısı 1 ise, bir süre bekle
+                if (s.length() == 1) {
+                    // Kullanıcının bir süre yazmayı bitirmesini beklemek için gecikme uygula
+                    handler.postDelayed(() -> {
+                        // Eğer hala aynı uzunluktaysa ve isBarcodeProcessing false ise
+                        if (edtTrackId.getText().toString().length() == 1) {
+                            isBarcodeProcessing = true; // Barkod işleniyor olarak ayarla
+                            onViewClicked(); // Barkod işlendiğinde onViewClicked çağır
+                        }
+                    }, 6000); // 200ms gecikme, ihtiyaca göre ayarlayın
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+        edtTrackId.addTextChangedListener(barcodeTextWatcher);
+    }
     @Override
     protected void setUp() {
 
@@ -97,11 +153,12 @@ public class DeliveryActivity extends BaseActivity implements
 
         mPresenter.onViewPrepared();
     }
+
     @OnEditorAction(R.id.edtTrackId)
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
-            // Enter tuşuna basıldığında yapılacak işlemleri burada gerçekleştirin
-            onViewClicked(); // veya burada doğrudan işlemleri çağırabilirsiniz
+        if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+            onViewClicked();
             return true;
         }
         return false;
@@ -111,6 +168,8 @@ public class DeliveryActivity extends BaseActivity implements
     public void onViewClicked() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         onFragmentDetached(CameraFragment.TAG);//TODO yeni eklendi 04.03.2020
+
+        String barcode = edtTrackId.getText().toString();
 
         if (islemTipi.equals(AppConstants.YUKLEMEINDIRMEHARAKET) || islemTipi.equals(AppConstants.NOBARCODE)) {
             if (islemTipi.equals(AppConstants.YUKLEMEINDIRMEHARAKET)) {
@@ -133,11 +192,7 @@ public class DeliveryActivity extends BaseActivity implements
         } else {
 
             if (edtTrackId.getText().toString().length() == 34 || edtTrackId.getText().toString().length() == 11 || edtTrackId.getText().toString().length() == 7 || edtTrackId.getText().toString().length() == 17) {
-                Fragment fragment = fragmentManager.findFragmentByTag(MultiDeliveryFragment.TAG);
-                if (fragment instanceof MultiDeliveryMvpView) {
-                    ((MultiDeliveryMvpView) fragment).sendBarcode(edtTrackId.getText().toString(), false);
-                }
-                edtTrackId.setText("");
+                onBarcodeScanned(edtTrackId.getText().toString(),false);
             }
             else {
 //                Intent intent = new Intent(DeliveryActivity.this, DeliverCargoActivity.class);
@@ -145,8 +200,42 @@ public class DeliveryActivity extends BaseActivity implements
 //                intent.putExtra("islemTipi", AppConstants.TOPLUTESLIMAT);
 //
 //                startActivity(intent);
-                edtTrackId.setText("");
                 Toast.makeText(DeliveryActivity.this, "HATA: Barkod Hatalı", Toast.LENGTH_SHORT).show();
+                vibrate2("Barkod Hatalı");
+            }
+        }
+        resetBarcodeField();
+    }
+    private void resetBarcodeField() {
+        edtTrackId.removeTextChangedListener(barcodeTextWatcher); // TextWatcher geçici olarak çıkarılır
+        edtTrackId.setText(""); // Barkod alanını temizle
+        handler.postDelayed(() -> {
+            edtTrackId.addTextChangedListener(barcodeTextWatcher); // TextWatcher tekrar eklenir
+            edtTrackId.requestFocus(); // Odak tekrar EditText'te olsun
+            isBarcodeProcessing = false; // Barkod işlem durumu sıfırlanır
+        }, 100); // Gecikme süresi Zebra cihazınızın hızına göre ayarlanabilir
+    }
+    public void onBarcodeScanned(String barcode, boolean isBarcode) {
+
+        // Barkod daha önce okutulmuş mu diye kontrol ediyoruz
+        if (scannedBarcodes.contains(barcode)) {
+            // Barkod zaten okutulduysa kullanıcıya uyarı göster
+//            SpannableString spannableMessage = new SpannableString(barcode + " Bu Barkod Daha Önce Okutuldu !");
+//            spannableMessage.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, barcode.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//            new AlertDialog.Builder(this)
+//                    .setTitle("Mükerrer Barkod")
+//                    .setMessage(spannableMessage)
+//                    .setPositiveButton("Tamam", (dialog, which) -> dialog.dismiss())
+//                    .show();
+            vibrate2("Daha Önce Okutuldu");
+        } else {
+            // Barkod okutulmadıysa, HashSet'e ekle ve işlemleri devam ettir
+            scannedBarcodes.add(barcode);
+
+            Fragment fragment = fragmentManager.findFragmentByTag(MultiDeliveryFragment.TAG);
+            if (fragment instanceof MultiDeliveryMvpView) {
+                ((MultiDeliveryMvpView) fragment).sendBarcode(edtTrackId.getText().toString(),scannedBarcodes.size(), isBarcode);
             }
         }
     }
@@ -185,11 +274,9 @@ public class DeliveryActivity extends BaseActivity implements
             }
         } else {
             if (codeContent.length() == 34 || codeContent.length() == 11 || codeContent.length() == 7 || codeContent.length() == 17) {
-                Fragment fragment = fragmentManager.findFragmentByTag(MultiDeliveryFragment.TAG);
-                if (fragment instanceof MultiDeliveryMvpView) {
-                    ((MultiDeliveryMvpView) fragment).sendBarcode(codeContent, true);
-                }
+                onBarcodeScanned(codeContent,true);
                 edtTrackId.setText("");
+                edtTrackId.requestFocus();
             } else {
 //                Intent intent = new Intent(DeliveryActivity.this, DeliverCargoActivity.class);
 //                intent.putExtra("TrackId", codeContent);
@@ -197,6 +284,7 @@ public class DeliveryActivity extends BaseActivity implements
 //
 //                startActivity(intent);
                 edtTrackId.setText("");
+                edtTrackId.requestFocus();
                 Toast.makeText(DeliveryActivity.this, "HATA: Barkod Hatalı", Toast.LENGTH_SHORT).show();
             }
         }
@@ -220,10 +308,11 @@ public class DeliveryActivity extends BaseActivity implements
 
     @Override
     public void showBluetoothFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.barcode_frame, BluetoothFragment.newInstance(), BluetoothFragment.TAG)
-                .commit();
+//        edtTrackId.requestFocus();
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .add(R.id.barcode_frame, BluetoothFragment.newInstance(), BluetoothFragment.TAG)
+//                .commit();
 
     }
 
@@ -243,11 +332,9 @@ public class DeliveryActivity extends BaseActivity implements
             }
         } else {
             if (codeContent.length() == 34 || codeContent.length() == 11 || codeContent.length() == 7 || codeContent.length() == 17) {
-                Fragment fragment = fragmentManager.findFragmentByTag(MultiDeliveryFragment.TAG);
-                if (fragment instanceof MultiDeliveryMvpView) {
-                    ((MultiDeliveryMvpView) fragment).sendBarcode(codeContent, true);
-                }
+                onBarcodeScanned(codeContent,true);
                 edtTrackId.setText("");
+                edtTrackId.requestFocus();
             } else {
 //                Intent intent = new Intent(DeliveryActivity.this, DeliverCargoActivity.class);
 //                intent.putExtra("TrackId", codeContent);
@@ -280,7 +367,7 @@ public class DeliveryActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        onFragmentDetached(BluetoothFragment.TAG);
+//        onFragmentDetached(BluetoothFragment.TAG);
         onFragmentDetached(CameraFragment.TAG);
 //            getSupportFragmentManager().popBackStackImmediate();
         super.onBackPressed();
@@ -328,5 +415,9 @@ public class DeliveryActivity extends BaseActivity implements
                     .add(R.id.fragment_body, MultiDeliveryFragment.newInstance(), MultiDeliveryFragment.TAG)
                     .commit();
         }
+    }
+    @Override
+    public void showTokenExpired(){
+        BaseActivity.showTokenExpired(DeliveryActivity.this,"Oturum süresi doldu. Tekrar giriş yapınız","UYARI");
     }
 }

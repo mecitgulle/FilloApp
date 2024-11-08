@@ -1,7 +1,6 @@
 package com.bt.arasholding.filloapp.ui.textbarcode;
 
 import com.androidnetworking.error.ANError;
-import com.bt.arasholding.filloapp.R;
 import com.bt.arasholding.filloapp.data.DataManager;
 import com.bt.arasholding.filloapp.data.model.Barcode;
 import com.bt.arasholding.filloapp.data.network.model.CargoMovementRequest;
@@ -238,7 +237,6 @@ public class TextBarcodePresenter<V extends TextBarcodeMvpView> extends BasePres
 //                                })
 //        );
     }
-
     @Override
     public void refreshList(int islemTipi) {
         getCompositeDisposable().add(getDataManager()
@@ -254,6 +252,15 @@ public class TextBarcodePresenter<V extends TextBarcodeMvpView> extends BasePres
 
                 }));
     }
+//public void refreshList(int islemTipi) {
+//    try {
+//        List<Barcode> barcodeList = getDataManager().getBarcodesByIslemTipi(islemTipi);
+//        // UI'yi güncellemek için gerekli işlemleri yap
+//        getMvpView().updateBarcodeList(barcodeList);
+//    } catch (Exception e) {
+//        // Hata durumunu ele al
+//    }
+//}
 
     @Override
     public void sendToServer(String barcode, String islemTipi) {
@@ -304,18 +311,18 @@ public class TextBarcodePresenter<V extends TextBarcodeMvpView> extends BasePres
                 }));
     }
 
-    private void updateBarcodebyBarcodeType(Barcode barcode) {
-        getCompositeDisposable().add(getDataManager()
-                .updateBarcodebyBarcodeType(barcode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        refreshList(barcode.getIslemTipi());
-                    }
-                }, throwable -> {
-
-                }));
-    }
+//    private void updateBarcodebyBarcodeType(Barcode barcode) {
+//        getCompositeDisposable().add(getDataManager()
+//                .updateBarcodebyBarcodeType(barcode)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Boolean>() {
+//                    @Override
+//                    public void accept(Boolean aBoolean) throws Exception {
+//                        refreshList(barcode.getIslemTipi());
+//                    }
+//                }, throwable -> {
+//
+//                }));
+//    }
 }

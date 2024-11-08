@@ -122,4 +122,10 @@ public class DeliverMultipleCustomerActivity extends BaseActivity implements
             startActivity(intent);
         }
     }
+
+    @Override
+    public void showTokenExpired(){
+        BaseActivity.showTokenExpired(DeliverMultipleCustomerActivity.this,"Oturum süresi doldu. Tekrar giriş yapınız","UYARI");
+    }
+
 }

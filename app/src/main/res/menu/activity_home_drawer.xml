@@ -20,10 +20,10 @@
             android:id="@+id/nav_atf_teslimat"
             android:icon="@drawable/ic_completed_task_white"
             android:title="@string/menu_atf_teslimat" />
-        <item
-            android:id="@+id/nav_toplu_teslimat"
-            android:icon="@drawable/ic_list_black_white"
-            android:title="@string/menu_toplu_teslimat" />
+<!--        <item-->
+<!--            android:id="@+id/nav_toplu_teslimat"-->
+<!--            android:icon="@drawable/ic_list_black_white"-->
+<!--            android:title="@string/menu_toplu_teslimat" />-->
         <item
             android:id="@+id/nav_arac_cikis"
             android:icon="@drawable/ic_lorry_black_white"

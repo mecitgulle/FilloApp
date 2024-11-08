@@ -72,4 +72,9 @@ public class DecideDialog extends BaseDialog implements DecideDialogMvpView {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void vibrate2(String Message) {
+
+    }
 }

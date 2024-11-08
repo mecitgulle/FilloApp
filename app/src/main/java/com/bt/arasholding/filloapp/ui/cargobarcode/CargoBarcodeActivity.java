@@ -17,6 +17,7 @@ import com.bt.arasholding.filloapp.ui.base.BaseActivity;
 import com.bt.arasholding.filloapp.ui.camera.CameraFragment;
 import com.bt.arasholding.filloapp.ui.delivercargo.DeliverCargoActivity;
 import com.bt.arasholding.filloapp.ui.shipment.ShipmentActivity;
+import com.bt.arasholding.filloapp.ui.shipment.lazer.ShipmentLazerActivity;
 import com.bt.arasholding.filloapp.utils.AppConstants;
 import com.manojbhadane.QButton;
 
@@ -221,6 +222,10 @@ public class CargoBarcodeActivity extends BaseActivity implements
         }
 
         return false;
+    }
+    @Override
+    public void showTokenExpired(){
+        BaseActivity.showTokenExpired(CargoBarcodeActivity.this,"Oturum süresi doldu. Tekrar giriş yapınız","UYARI");
     }
 
 }

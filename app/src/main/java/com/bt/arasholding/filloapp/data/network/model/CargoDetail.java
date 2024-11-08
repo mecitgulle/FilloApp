@@ -53,6 +53,17 @@ public class CargoDetail {
     @Expose
     private String TazminNo ;
 
+    @SerializedName("DAGITIMADET")
+    @Expose
+    private double dagitimAdet ;
+
+    public double getDagitimAdet() {
+        return dagitimAdet;
+    }
+
+    public void setDagitimAdet(double dagitimAdet) {
+        this.dagitimAdet = dagitimAdet;
+    }
 
     public String getAtfNo() {
         return atfNo;

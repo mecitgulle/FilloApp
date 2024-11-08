@@ -37,13 +37,13 @@ public interface HomeMvpPresenter<V extends HomeMvpView> extends MvpPresenter<V>
 
     void onDrawerCargoMovementClick();
 
-    void onDrawerDagitimClick();
+    void onDrawerDagitimClick(String DeviceName);
 
     void onDrawerOptionAboutClick();
 
     void onDrawerBarcodePrinterClick();
 
-    void onDrawerHatYukleme();
+    void onDrawerHatYukleme(String DeviceName);
 
     void onDrawerDevir();
 
